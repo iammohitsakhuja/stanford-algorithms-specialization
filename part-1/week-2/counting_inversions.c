@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int merge_and_count_split_inv(int *array, int first, int middle, int last);
-int sort_and_count(int *array, int first, int last);
+long long int merge_and_count_split_inv(int *array, int first, int middle, int last);
+long long int sort_and_count(int *array, int first, int last);
 
 int main(int argc, char **argv)
 {
@@ -19,14 +19,14 @@ int main(int argc, char **argv)
     for (int i = 0; i < length; i++)
         scanf("%i", &array[i]);
 
-    int inversions = sort_and_count(array, 0, length - 1);
+    long long int inversions = sort_and_count(array, 0, length - 1);
 
-    printf("\nNumber of inversions = %i\n", inversions);
+    printf("\nNumber of inversions = %lld\n", inversions);
 
     return 0;
 }
 
-int sort_and_count(int *array, int first, int last)
+long long int sort_and_count(int *array, int first, int last)
 {
     if (first == last)
     {
@@ -36,15 +36,15 @@ int sort_and_count(int *array, int first, int last)
     {
         int middle = (first + last) / 2;
 
-        int x = sort_and_count(array, first, middle);
-        int y = sort_and_count(array, middle + 1, last);
-        int z = merge_and_count_split_inv(array, first, middle, last);
+        long long int x = sort_and_count(array, first, middle);
+        long long int y = sort_and_count(array, middle + 1, last);
+        long long int z = merge_and_count_split_inv(array, first, middle, last);
 
         return x + y + z;
     }
 }
 
-int merge_and_count_split_inv(int *array, int first, int middle, int last)
+long long int merge_and_count_split_inv(int *array, int first, int middle, int last)
 {
     // Copy the existing elements into new arrays.
     int left_len = middle - first + 1;
@@ -63,7 +63,7 @@ int merge_and_count_split_inv(int *array, int first, int middle, int last)
     int i = 0;
     int j = 0;
     int k = first;
-    int count = 0;
+    long long int count = 0;
 
     while (i < left_len && j < right_len)
     {
