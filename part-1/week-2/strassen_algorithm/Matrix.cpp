@@ -77,6 +77,16 @@ Matrix Matrix::operator*(Matrix &m)
     return result;
 }
 
+bool Matrix::operator==(Matrix &m)
+{
+    for (int i = 0; i < this->n; i++)
+        for (int j = 0; j < this->n; j++)
+            if (this->matrix[i][j] != m.matrix[i][j])
+                return false;
+
+    return true;
+}
+
 void Matrix::operator=(Matrix m)
 {
     for (int i = 0; i < this->n; i++)

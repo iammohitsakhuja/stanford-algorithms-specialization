@@ -15,6 +15,7 @@ class Matrix
     Matrix operator+(Matrix &m);
     Matrix operator-(Matrix &m);
     Matrix operator*(Matrix &m);
+    bool operator==(Matrix &m);
     void operator=(Matrix m);
     friend Matrix strassen_multiplication(Matrix &m1, Matrix &m2);
 };
