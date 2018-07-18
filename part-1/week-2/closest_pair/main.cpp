@@ -46,6 +46,14 @@ int main(int argc, char **argv)
     for (int i = 0; i < n; i++)
         points_y[i].print();
 
+    Pair *brute_force_point = brute_force(points, n);
+    brute_force_point->print();
+
+    Pair *closest_pair_point = closest_pair(points_x, points_y, 0, n - 1);
+    closest_pair_point->print();
+
+    delete brute_force_point;
+    delete closest_pair_point;
     free(points);
     free(points_x);
     free(points_y);

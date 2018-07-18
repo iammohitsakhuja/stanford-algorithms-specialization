@@ -10,14 +10,14 @@ CXXFLAGS ?= -fsanitize=signed-integer-overflow -fsanitize=undefined -ggdb3 -O0 -
 EXE = closest_pair
 
 # Space separated list of header-files
-HDRS = Point.hpp helper.hpp constants.hpp
+HDRS = Point.hpp Pair.hpp helper.hpp constants.hpp
 
 # Space separated list of libraries, if any,
 # each of which should be prefixed with -l
 LIBS =
 
 # Space separated list of source-files
-SRCS = main.cpp Point.cpp helper.cpp
+SRCS = main.cpp Point.cpp Pair.cpp helper.cpp
 
 # Automatically generated list of object files
 OBJS = $(SRCS:.c=.o)
