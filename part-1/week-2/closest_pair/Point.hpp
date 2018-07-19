@@ -12,6 +12,7 @@ class Point
     void scan(void);
     void print(void);
     double get_distance_with(Point p2);
+    bool operator==(Point p2);
 };
 
 #endif

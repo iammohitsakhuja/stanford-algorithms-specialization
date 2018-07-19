@@ -16,21 +16,19 @@ void sort_points(Point *points, int first, int last, char sort_by)
     {
         return;
     }
-    else
-    {
-        int middle = (first + last) / 2;
 
-        // Sort the left subarray of points.
-        sort_points(points, first, middle, sort_by);
+    int middle = (first + last) / 2;
 
-        // Sort the right subarray of points.
-        sort_points(points, middle + 1, last, sort_by);
+    // Sort the left subarray of points.
+    sort_points(points, first, middle, sort_by);
 
-        // Merge the two subarrays.
-        merge(points, first, middle, last, sort_by);
+    // Sort the right subarray of points.
+    sort_points(points, middle + 1, last, sort_by);
 
-        return;
-    }
+    // Merge the two subarrays.
+    merge(points, first, middle, last, sort_by);
+
+    return;
 }
 
 void merge(Point *points, int first, int middle, int last, char sort_by)
@@ -107,127 +105,125 @@ void merge(Point *points, int first, int middle, int last, char sort_by)
     free(right_array);
 }
 
-Pair *closest_pair(Point *points_x, Point *points_y, int first, int last)
+Pair *closest_pair(Point *points_x, Point *points_y, int n)
 {
-    int n = last - first + 1;
+    // Just solve using brute force when n <=3.
     if (n < 4)
     {
-        Pair *pair = new Pair(points_x[0], points_x[1]);
-        for (int i = 0; i < n - 1; i++)
-        {
-            for (int j = i + 1; j < n; j++)
-            {
-                double distance = points_x[i].get_distance_with(points_x[j]);
-                if (distance < pair->distance)
-                {
-                    pair->p1 = points_x[i];
-                    pair->p2 = points_x[j];
-                    pair->distance = distance;
-                }
-            }
-        }
-
-        return pair;
+        return brute_force(points_x, n);
     }
-    else
+
+    // Divide the x and y arrays into two halves each.
+    int middle = (n - 1) / 2;
+    int left_len = (n + 1) / 2;
+    int right_len = n / 2;
+
+    Point *qx = (Point *)malloc(left_len * sizeof(Point));
+    Point *qy = (Point *)malloc(left_len * sizeof(Point));
+    Point *rx = (Point *)malloc(right_len * sizeof(Point));
+    Point *ry = (Point *)malloc(right_len * sizeof(Point));
+
+    for (int i = 0; i < left_len; i++)
+        qx[i] = points_x[i];
+
+    for (int j = 0; j < right_len; j++)
+        rx[j] = points_x[middle + 1 + j];
+
+    // The y array should be divided using the midpoint of x array.
+    Point midpoint = points_x[middle];
+
+    int j = 0;
+    int k = 0;
+    for (int i = 0; i < n; i++)
     {
-        Point *qx = (Point *)malloc((n / 2) * sizeof(Point));
-        Point *qy = (Point *)malloc((n / 2) * sizeof(Point));
-        Point *rx = (Point *)malloc((n / 2) * sizeof(Point));
-        Point *ry = (Point *)malloc((n / 2) * sizeof(Point));
-
-        int middle = (last - first) / 2;
-        for (int i = 0, length = n / 2; i < length; i++)
+        if (points_y[i].x <= midpoint.x)
         {
-            qx[i] = points_x[first + i];
-            rx[i] = points_x[middle + 1 + i];
-        }
-
-        Point midpoint = points_x[middle];
-
-        int j = 0;
-        int k = 0;
-        for (int i = 0; i < n; i++)
-        {
-            if (points_y[first + i].x < midpoint.x)
-            {
-                qy[j] = points_y[first + i];
-                j++;
-            }
-            else
-            {
-                ry[j] = points_y[first + i];
-                k++;
-            }
-        }
-
-        Pair *pair1 = closest_pair(qx, qy, first, middle);
-        Pair *pair2 = closest_pair(rx, ry, middle + 1, last);
-
-        // Cleanup.
-        free(qx);
-        free(qy);
-        free(rx);
-        free(ry);
-
-        double delta = std::min(pair1->distance, pair2->distance);
-        Pair *pair3 = closest_split_pair(points_x, points_y, first, last, delta);
-
-        if (pair3 && pair3->distance < delta)
-        {
-            delete pair1;
-            delete pair2;
-            return pair3;
+            qy[j] = points_y[i];
+            j++;
         }
         else
         {
-            delete pair3;
-            if (pair1->distance < pair2->distance)
-            {
-                delete pair2;
-                return pair1;
-            }
-            else
-            {
-                delete pair1;
-                return pair2;
-            }
+            ry[k] = points_y[i];
+            k++;
         }
     }
+
+    // Find the closest pairs in the left and right halves.
+    Pair *pair1 = closest_pair(qx, qy, left_len);
+    Pair *pair2 = closest_pair(rx, ry, right_len);
+
+    // Cleanup.
+    free(qx);
+    free(qy);
+    free(rx);
+    free(ry);
+
+    // Find the closest pair in both halves.
+    double delta = std::min(pair1->distance, pair2->distance);
+    Pair *pair3 = closest_split_pair(points_x, points_y, n, delta);
+
+    // Return the appropriate pair.
+    if (pair3 != NULL)
+    {
+        delete pair1;
+        delete pair2;
+        return pair3;
+    }
+    else
+    {
+        if (pair1->distance < pair2->distance)
+        {
+            delete pair2;
+            return pair1;
+        }
+        else
+        {
+            delete pair1;
+            return pair2;
+        }
+    }
+
 }
 
-Pair *closest_split_pair(Point *points_x, Point *points_y, int first, int last, double delta)
+Pair *closest_split_pair(Point *points_x, Point *points_y, int n, double delta)
 {
-    int n = last - first + 1;
-    int middle = (last - first) / 2;
+    int middle = (n - 1) / 2;
     Point midpoint = points_x[middle];
 
-    Point *Sy = (Point *)malloc(n * sizeof(Point));
-    // Sy should be in decreasing order.
-    int index = 0;
-    for (int i = n - 1; i >= 0; i--)
-    {
+    // Calculate the number of points that have their x-coordinate in [x - delta, x + delta],
+    // sorted by y-coordinate.
+    int count = 0;
+    for (int i = 0; i < n; i++)
+        if (abs(points_y[i].x - midpoint.x) < delta)
+            count++;
+
+    // Get those points into a separate array.
+    Point *sy = (Point *)malloc(count * sizeof(Point));
+    for (int i = 0, index = 0; i < n; i++)
         if (abs(points_y[i].x - midpoint.x) < delta)
         {
-            Sy[index] = points_y[i];
+            sy[index] = points_y[i];
             index++;
         }
-    }
-    int length_sy = index;
 
-    Pair *pair = new Pair(Sy[0], Sy[1]);
+    // Find the closest pair.
+    // The inner loop will only run a max of 7 times for each iteration of the outer loop.
+    Pair *pair = new Pair(sy[0], sy[1]);
     bool pair_found = false;
-    for (int i = 0; i < length_sy; i++)
+    for (int i = 0, i_len = count - 2; i <= i_len; i++)
     {
-        for (int j = i + 1, length = std::min(i + 15, length_sy); j < length; j++)
+        for (int j = i + 1, j_len = std::min(i + 7, count - 1); j <= j_len; j++)
         {
-            double distance = Sy[i].get_distance_with(Sy[j]);
-            if (distance < delta && distance < pair->distance)
+            double distance = sy[i].get_distance_with(sy[j]);
+            if (distance < delta)
             {
                 pair_found = true;
-                pair->p1 = Sy[i];
-                pair->p2 = Sy[j];
-                pair->distance = distance;
+                if (distance < pair->distance)
+                {
+                    pair->p1 = sy[i];
+                    pair->p2 = sy[j];
+                    pair->distance = distance;
+                }
             }
         }
     }
@@ -243,6 +239,7 @@ Pair *closest_split_pair(Point *points_x, Point *points_y, int first, int last, 
 
 Pair *brute_force(Point *points, int n)
 {
+    // Create a new pair to hold the pair with least distance.
     Pair *pair = new Pair(points[0], points[1]);
     for (int i = 0, length = n - 1; i < length; i++)
     {

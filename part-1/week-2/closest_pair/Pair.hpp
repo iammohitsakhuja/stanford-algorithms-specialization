@@ -12,6 +12,7 @@ class Pair
 
     Pair(Point p1, Point p2);
     void print(void);
+    bool operator==(Pair pair2);
 };
 
 #endif
