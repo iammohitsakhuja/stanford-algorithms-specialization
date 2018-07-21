@@ -27,22 +27,17 @@ int choose_median_as_pivot(int *array, int first, int last)
 
     if (array[middle] < array[first])
     {
-        if (array[middle] > array[last])
+        if (array[middle] >= array[last])
             swap(&array[first], &array[middle]);
-        else
+        else if (array[last] < array[first])
             swap(&array[first], &array[last]);
     }
-    else
+    else if (array[middle] > array[first])
     {
-        if (array[middle] == array[first])
-            return array[first];
-        else
-        {
-            if (array[middle] <= array[last])
-                swap(&array[first], &array[middle]);
-            else if (array[last] > array[first])
-                swap (&array[first], &array[last]);
-        }
+        if (array[middle] <= array[last])
+            swap(&array[first], &array[middle]);
+        else if (array[last] > array[first])
+            swap (&array[first], &array[last]);
     }
 
     return array[first];
