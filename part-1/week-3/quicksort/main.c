@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "quicksort.h"
 #include "helpers.h"
 
@@ -13,6 +14,8 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    srand(time(NULL));
+
     int num = atoi(argv[1]);
     int *array = (int *)malloc(num * sizeof(int));
 
@@ -23,12 +26,13 @@ int main(int argc, char **argv)
     int *copy1 = (int *)malloc(num * sizeof(int));
     int *copy2 = (int *)malloc(num * sizeof(int));
     int *copy3 = (int *)malloc(num * sizeof(int));
+    int *copy4 = (int *)malloc(num * sizeof(int));
 
     // Copy the elements into 3 different arrays.
     for (int i = 0; i < num; i++)
-        copy1[i] = copy2[i] = copy3[i] = array[i];
+        copy1[i] = copy2[i] = copy3[i] = copy4[i] = array[i];
 
-    int comparisons1 = 0, comparisons2 = 0, comparisons3 = 0;
+    int comparisons1 = 0, comparisons2 = 0, comparisons3 = 0, comparisons4 = 0;
     // Structures for timing data.
     struct rusage before, after;
 
@@ -36,6 +40,7 @@ int main(int argc, char **argv)
     double time_first_element_as_pivot = 0.0;
     double time_last_element_as_pivot= 0.0;
     double time_median_as_pivot = 0.0;
+    double time_random_pivot = 0.0;
 
     // Sort by choosing first element as the pivot.
     getrusage(RUSAGE_SELF, &before);
@@ -55,23 +60,32 @@ int main(int argc, char **argv)
     getrusage(RUSAGE_SELF, &after);
     time_median_as_pivot = calculate(&before, &after);
 
+    // Sort by choosing a random pivot.
+    getrusage(RUSAGE_SELF, &before);
+    quicksort(copy4, 0, num - 1, choose_random_pivot, &comparisons4);
+    getrusage(RUSAGE_SELF, &after);
+    time_random_pivot = calculate(&before, &after);
+
     // Comparisons.
     printf("Number of comparisons with first element as pivot: %i\n", comparisons1);
     printf("Number of comparisons with last element as pivot:  %i\n", comparisons2);
     printf("Number of comparisons with median as pivot:        %i\n", comparisons3);
+    printf("Number of comparisons with a random pivot:         %i\n", comparisons4);
 
     printf("TIME IN calculating result (first element):        %.2f\n", time_first_element_as_pivot);
     printf("TIME IN calculating result (last element):         %.2f\n", time_last_element_as_pivot);
     printf("TIME IN calculating result (median):               %.2f\n", time_median_as_pivot);
+    printf("TIME IN calculating result (random):               %.2f\n", time_random_pivot);
     printf("TIME IN TOTAL:                                     %.2f\n\n",
         time_first_element_as_pivot + time_last_element_as_pivot +
-        time_median_as_pivot);
+        time_median_as_pivot + time_random_pivot);
 
     // Cleanup.
     free(array);
     free(copy1);
     free(copy2);
     free(copy3);
+    free(copy4);
     return 0;
 }
 

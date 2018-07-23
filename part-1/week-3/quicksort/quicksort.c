@@ -11,19 +11,8 @@ void quicksort(int *array, int first, int last, int (*method)(int *, int, int), 
     }
 
     int pivot = choose_pivot(array, first, last, method);
-    int wall_index = first;
-    for (int i = wall_index + 1; i <= last; i++)
-    {
-        if (array[i] < pivot)
-        {
-            wall_index++;
-            swap(&array[wall_index], &array[i]);
-        }
-    }
+    int wall_index = partition(array, first, last, pivot);
     *comparisons += last - first;
-
-    // Swap the element at the wall with the pivot.
-    swap(&array[first], &array[wall_index]);
 
     // Sort the left and right subarrays.
     quicksort(array, first, wall_index - 1, method, comparisons);
