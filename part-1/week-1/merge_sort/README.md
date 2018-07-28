@@ -21,4 +21,5 @@ includes a test that checks whether the array is sorted in ascending order or
 not.
 
 **Disclaimer:** The time to sort 10 million numbers that has been shown above
-may vary on your machine.
+may vary depending on your machine.
+
