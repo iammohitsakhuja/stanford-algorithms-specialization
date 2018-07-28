@@ -1,6 +1,6 @@
-#include "Point.hpp"
 #include <cmath>
 #include <iostream>
+#include "Point.hpp"
 
 Point::Point(int x, int y) : x(x), y(y) {}
 
