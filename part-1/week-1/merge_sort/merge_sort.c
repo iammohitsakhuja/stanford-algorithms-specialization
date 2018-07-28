@@ -5,19 +5,17 @@ void merge_sort(int *array, int first, int last)
 {
     if (first == last)
         return;
-    else    /* if there is only one element */
-    {
-        int middle = (first + last) / 2;
 
-        // Sort the left array.
-        merge_sort(array, first, middle);
+    int middle = (first + last) / 2;
 
-        // Sort the right array.
-        merge_sort(array, middle + 1, last);
+    // Sort the left array.
+    merge_sort(array, first, middle);
 
-        // Merge the two arrays.
-        merge(array, first, middle, last);
-    }       /* sort both subarrays if there is more than 1 element */
+    // Sort the right array.
+    merge_sort(array, middle + 1, last);
+
+    // Merge the two arrays.
+    merge(array, first, middle, last);
 }
 
 void merge(int *array, int first, int middle, int last)
