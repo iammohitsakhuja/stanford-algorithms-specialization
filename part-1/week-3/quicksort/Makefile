@@ -10,14 +10,14 @@ CFLAGS ?= -fsanitize=signed-integer-overflow -fsanitize=undefined -ggdb3 -O0 -Qu
 EXE = quicksort
 
 # Space separated list of header-files
-HDRS = quicksort.h helpers.h benchmark.h
+HDRS = quicksort.h helpers.h benchmark.h merge_sort.h
 
 # Space separated list of libraries, if any,
 # each of which should be prefixed with -l
 LIBS =
 
 # Space separated list of source-files
-SRCS = main.c quicksort.c helpers.c benchmark.c
+SRCS = main.c quicksort.c helpers.c benchmark.c merge_sort.c
 
 # Automatically generated list of object files
 OBJS = $(SRCS:.c=.o)
