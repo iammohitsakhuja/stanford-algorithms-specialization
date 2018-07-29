@@ -23,9 +23,7 @@ void Matrix::print(void)
     for (int i = 0; i < this->n; i++)
     {
         for (int j = 0; j < this->n; j++)
-        {
             printf("%9i ", this->matrix[i][j]);
-        }
         printf("\n");
     }
     printf("\n");
@@ -93,3 +91,4 @@ void Matrix::operator=(Matrix m)
         for (int j = 0; j < this->n; j++)
             this->matrix[i][j] = m.matrix[i][j];
 }
+
