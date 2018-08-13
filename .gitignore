@@ -2,3 +2,6 @@
 *.swp
 .vscode/
 
+# Temporarily don't include deterministic selection
+deterministic_selection/
+
