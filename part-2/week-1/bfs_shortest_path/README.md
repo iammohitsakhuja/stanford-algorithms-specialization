@@ -1,4 +1,4 @@
-# Breadth First Search
+# Shortest Path using BFS
 
 ## Overview
 
