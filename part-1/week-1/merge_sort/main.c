@@ -1,6 +1,6 @@
-#include <assert.h>
 #include "benchmark.h"
 #include "merge_sort.h"
+#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,8 +11,7 @@ bool is_sorted(int *array, int length);
 int main(int argc, char **argv)
 {
     // Ensure proper usage.
-    if (argc != 2)
-    {
+    if (argc != 2) {
         printf("Usage: %s num\n", argv[0]);
         return 1;
     }
@@ -63,4 +62,3 @@ bool is_sorted(int *array, int length)
 
     return true;
 }
-

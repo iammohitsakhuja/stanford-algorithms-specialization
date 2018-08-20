@@ -6,8 +6,7 @@
 int main(int argc, char **argv)
 {
     // Ensure proper usage.
-    if (argc != 2)
-    {
+    if (argc != 2) {
         printf("Usage: %s num\n", argv[0]);
         return 1;
     }
@@ -43,4 +42,3 @@ int main(int argc, char **argv)
     free(array);
     return 0;
 }
-

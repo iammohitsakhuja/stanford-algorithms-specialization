@@ -1,9 +1,9 @@
-#include "benchmark.hpp"
+#include "Point.hh"
+#include "benchmark.hh"
+#include "constants.hh"
+#include "helper.hh"
 #include <cassert>
-#include "constants.hpp"
-#include "helper.hpp"
 #include <iostream>
-#include "Point.hpp"
 
 using namespace std;
 
@@ -12,14 +12,13 @@ void test(Pair *brute_force_pair, Pair *closest_points_pair);
 int main(int argc, char **argv)
 {
     // Ensure proper usage.
-    if (argc != 2)
-    {
+    if (argc != 2) {
         printf("Usage: %s num\n", argv[0]);
         return 1;
     }
 
     // Create an array to store all points.
-    int n = atoi(argv[1]);
+    int n         = atoi(argv[1]);
     Point *points = (Point *)malloc(n * sizeof(Point));
 
     // Structures for timing data.
@@ -55,11 +54,11 @@ int main(int argc, char **argv)
 
     // Display the benchmark results.
     printf("TIME IN calculating result by brute force:             %.2f\n",
-            time_brute_force);
+        time_brute_force);
     printf("TIME IN calculating result by closest pair algorithm:  %.2f\n",
-            time_closest_pair_algorithm);
+        time_closest_pair_algorithm);
     printf("TIME IN TOTAL:                                         %.2f\n\n",
-            time_brute_force + time_closest_pair_algorithm);
+        time_brute_force + time_closest_pair_algorithm);
 
     // Run tests.
     test(brute_force_pair, closest_points_pair);
@@ -76,4 +75,3 @@ void test(Pair *brute_force_pair, Pair *closest_points_pair)
 {
     assert(*brute_force_pair == *closest_points_pair);
 }
-

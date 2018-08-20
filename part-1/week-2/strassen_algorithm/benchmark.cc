@@ -1,7 +1,7 @@
-#include "benchmark.h"
-#include <stdio.h>
+#include "benchmark.hh"
+#include <iostream>
 
-// Returns number of seconds between b and a.
+// Returns number of seconds between b and a
 double calculate(const struct rusage *b, const struct rusage *a)
 {
     if (b == NULL || a == NULL)

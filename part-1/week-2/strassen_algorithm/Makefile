@@ -4,23 +4,25 @@
 CXX ?= c++
 
 # Flags to pass to compiler
-CXXFLAGS ?= -fsanitize=signed-integer-overflow -fsanitize=undefined -ggdb3 -O0 -Qunused-arguments -std=c++17 -Wall -Werror -Wextra -Wno-sign-compare -Wno-unused-parameter
+CXXFLAGS ?= -fsanitize=signed-integer-overflow -fsanitize=undefined -ggdb3 \
+			-O0 -Qunused-arguments -std=c++17 -Wall -Werror -Wextra \
+			-Wno-sign-compare -Wno-unused-parameter
 
 # Name for executable
 EXE = strassen_algorithm
 
 # Space separated list of header-files
-HDRS = Matrix.hpp strassen.hpp benchmark.hpp
+HDRS = Matrix.hh strassen.hh benchmark.hh
 
 # Space separated list of libraries, if any,
 # each of which should be prefixed with -l
 LIBS =
 
 # Space separated list of source-files
-SRCS = main.cpp Matrix.cpp strassen.cpp benchmark.cpp
+SRCS = main.cc Matrix.cc strassen.cc benchmark.cc
 
 # Automatically generated list of object files
-OBJS = $(SRCS:.cpp=.o)
+OBJS = $(SRCS:.cc=.o)
 
 .PHONY: all
 all: $(EXE)

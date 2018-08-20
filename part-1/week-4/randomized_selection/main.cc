@@ -1,8 +1,8 @@
-#include "benchmark.hpp"
-#include "helpers.hpp"
+#include "benchmark.hh"
+#include "helpers.hh"
+#include "quicksort.hh"
+#include "rselect.hh"
 #include <iostream>
-#include "rselect.hpp"
-#include "quicksort.hpp"
 
 using namespace std;
 
@@ -11,8 +11,7 @@ void test(int num1, int num2);
 int main(int argc, char **argv)
 {
     // Ensure proper usage.
-    if (argc != 3)
-    {
+    if (argc != 3) {
         printf("Usage: %s num order\n", argv[0]);
         return 1;
     }
@@ -21,8 +20,8 @@ int main(int argc, char **argv)
     srand(time(NULL));
 
     // Create an array of the specified size.
-    int num = atoi(argv[1]);
-    int order = atoi(argv[2]);
+    int num    = atoi(argv[1]);
+    int order  = atoi(argv[2]);
     int *array = (int *)malloc(num * sizeof(int));
 
     // Create 2 copies of the array:
@@ -48,8 +47,8 @@ int main(int argc, char **argv)
 
     // Benchmark the time taken to find the element using randomized selection.
     getrusage(RUSAGE_SELF, &before);
-    int element = rselect(rselect_array, 0, num - 1, order,
-        choose_random_pivot);
+    int element
+        = rselect(rselect_array, 0, num - 1, order, choose_random_pivot);
     getrusage(RUSAGE_SELF, &after);
     time_randomized_selection = calculate(&before, &after);
 
@@ -80,4 +79,3 @@ void test(int num1, int num2)
 {
     assert(num1 == num2);
 }
-

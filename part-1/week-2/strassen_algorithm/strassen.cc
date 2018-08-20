@@ -1,5 +1,5 @@
+#include "Matrix.hh"
 #include <iostream>
-#include "Matrix.hpp"
 
 Matrix strassen_multiplication(Matrix &m1, Matrix &m2)
 {
@@ -12,14 +12,13 @@ Matrix strassen_multiplication(Matrix &m1, Matrix &m2)
 
     // Otherwise, create submatrices to divide the bigger matrices into.
     Matrix a(n / 2), b(n / 2), c(n / 2), d(n / 2), e(n / 2), f(n / 2),
-           g(n / 2), h(n / 2);
+        g(n / 2), h(n / 2);
 
     // Copy the elements from the bigger matrices into the smaller matrices.
     // m1 = [ a b ]             m2 = [ e f ]
     //      [ c d ]                  [ g h ]
     for (int i = 0, length = n / 2; i < length; i++)
-        for (int j = 0; j < length; j++)
-        {
+        for (int j = 0; j < length; j++) {
             a.matrix[i][j] = m1.matrix[i][j];
             b.matrix[i][j] = m1.matrix[i][n / 2 + j];
             c.matrix[i][j] = m1.matrix[n / 2 + i][j];
@@ -40,27 +39,27 @@ Matrix strassen_multiplication(Matrix &m1, Matrix &m2)
     // p6 = (b - d) * (g + h),
     // p7 = (a - c) * (e + f)
     Matrix temp1 = f - h;
-    Matrix p1 = strassen_multiplication(a, temp1);
+    Matrix p1    = strassen_multiplication(a, temp1);
 
-    temp1 = a + b;
+    temp1     = a + b;
     Matrix p2 = strassen_multiplication(temp1, h);
 
-    temp1 = c + d;
+    temp1     = c + d;
     Matrix p3 = strassen_multiplication(temp1, e);
 
-    temp1 = g - e;
+    temp1     = g - e;
     Matrix p4 = strassen_multiplication(d, temp1);
 
-    temp1 = a + d;
+    temp1        = a + d;
     Matrix temp2 = e + h;
-    Matrix p5 = strassen_multiplication(temp1, temp2);
+    Matrix p5    = strassen_multiplication(temp1, temp2);
 
-    temp1 = b - d;
-    temp2 = g + h;
+    temp1     = b - d;
+    temp2     = g + h;
     Matrix p6 = strassen_multiplication(temp1, temp2);
 
-    temp1 = a - c;
-    temp2 = e + f;
+    temp1     = a - c;
+    temp2     = e + f;
     Matrix p7 = strassen_multiplication(temp1, temp2);
 
     // Now, calculate the 4 resulting matrices.
@@ -74,14 +73,12 @@ Matrix strassen_multiplication(Matrix &m1, Matrix &m2)
     //          [ r3 r4 ]
     Matrix *result = new Matrix(n);
     for (int i = 0, length = n / 2; i < length; i++)
-        for (int j = 0; j < length; j++)
-        {
-            result->matrix[i][j] = r1.matrix[i][j];
-            result->matrix[i][n / 2 + j] = r2.matrix[i][j];
-            result->matrix[n / 2 + i][j] = r3.matrix[i][j];
+        for (int j = 0; j < length; j++) {
+            result->matrix[i][j]                 = r1.matrix[i][j];
+            result->matrix[i][n / 2 + j]         = r2.matrix[i][j];
+            result->matrix[n / 2 + i][j]         = r3.matrix[i][j];
             result->matrix[n / 2 + i][n / 2 + j] = r4.matrix[i][j];
         }
 
     return *result;
 }
-

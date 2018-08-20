@@ -1,5 +1,5 @@
+#include "helpers.hh"
 #include <cstdlib>
-#include "helpers.hpp"
 
 /**
  * Swaps two integers.
@@ -7,8 +7,8 @@
 static void swap(int *a, int *b)
 {
     int temp = *a;
-    *a = *b;
-    *b = temp;
+    *a       = *b;
+    *b       = temp;
 }
 
 /**
@@ -18,7 +18,7 @@ static void swap(int *a, int *b)
  */
 int choose_random_pivot(int *array, int first, int last)
 {
-    int n = last - first + 1;
+    int n     = last - first + 1;
     int index = first + rand() % n;
 
     swap(&array[first], &array[index]);
@@ -29,8 +29,8 @@ int choose_random_pivot(int *array, int first, int last)
 /**
  * Uses the method provided to choose a pivot and then returns it.
  */
-int choose_pivot(int *array, int first, int last,
-    int (*method)(int *, int, int))
+int choose_pivot(
+    int *array, int first, int last, int (*method)(int *, int, int))
 {
     return method(array, first, last);
 }
@@ -53,4 +53,3 @@ int partition(int *array, int first, int last, int pivot)
 
     return wall_index;
 }
-

@@ -4,23 +4,25 @@
 CXX ?= c++
 
 # Flags to pass to compiler
-CXXFLAGS ?= -fsanitize=signed-integer-overflow -fsanitize=undefined -ggdb3 -O0 -Qunused-arguments -std=c++17 -Wall -Werror -Wextra -Wno-sign-compare -Wno-unused-parameter
+CXXFLAGS ?= -fsanitize=signed-integer-overflow -fsanitize=undefined -ggdb3 \
+			-O0 -Qunused-arguments -std=c++17 -Wall -Werror -Wextra \
+			-Wno-sign-compare -Wno-unused-parameter
 
 # Name for executable
 EXE = closest_pair
 
 # Space separated list of header-files
-HDRS = Point.hpp Pair.hpp helper.hpp constants.hpp benchmark.hpp
+HDRS = Point.hh Pair.hh helper.hh constants.hh benchmark.hh
 
 # Space separated list of libraries, if any,
 # each of which should be prefixed with -l
 LIBS =
 
 # Space separated list of source-files
-SRCS = main.cpp Point.cpp Pair.cpp helper.cpp benchmark.cpp
+SRCS = main.cc Point.cc Pair.cc helper.cc benchmark.cc
 
 # Automatically generated list of object files
-OBJS = $(SRCS:.cpp=.o)
+OBJS = $(SRCS:.cc=.o)
 
 .PHONY: all
 all: $(EXE)

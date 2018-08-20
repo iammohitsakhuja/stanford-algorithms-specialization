@@ -21,10 +21,10 @@ void merge_sort(int *array, int first, int last)
 void merge(int *array, int first, int middle, int last)
 {
     // Create 2 new arrays to hold the existing elements.
-    int left_len = middle - first + 1;
+    int left_len  = middle - first + 1;
     int right_len = last - middle;
 
-    int *left_array = (int *)malloc(left_len * sizeof(int));
+    int *left_array  = (int *)malloc(left_len * sizeof(int));
     int *right_array = (int *)malloc(right_len * sizeof(int));
 
     // Copy the exisiting elements into these 2 arrays.
@@ -38,8 +38,7 @@ void merge(int *array, int first, int middle, int last)
     int i = 0;
     int j = 0;
     int k = first;
-    while (i < left_len && j < right_len)
-    {
+    while (i < left_len && j < right_len) {
         if (left_array[i] < right_array[j])
             array[k++] = left_array[i++];
         else
@@ -57,4 +56,3 @@ void merge(int *array, int first, int middle, int last)
     free(left_array);
     free(right_array);
 }
-

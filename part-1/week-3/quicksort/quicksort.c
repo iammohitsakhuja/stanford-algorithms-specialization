@@ -1,5 +1,5 @@
-#include "helpers.h"
 #include "quicksort.h"
+#include "helpers.h"
 
 void quicksort(int *array, int first, int last, int (*method)(int *, int, int),
     int *comparisons)
@@ -23,4 +23,3 @@ void quicksort(int *array, int first, int last, int (*method)(int *, int, int),
     quicksort(array, first, wall_index - 1, method, comparisons);
     quicksort(array, wall_index + 1, last, method, comparisons);
 }
-

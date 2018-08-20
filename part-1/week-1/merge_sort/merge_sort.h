@@ -5,4 +5,3 @@ void merge(int *array, int first, int middle, int last);
 void merge_sort(int *array, int first, int last);
 
 #endif
-

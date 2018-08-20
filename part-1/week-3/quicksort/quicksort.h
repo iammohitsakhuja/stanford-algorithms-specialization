@@ -5,4 +5,3 @@ void quicksort(int *array, int first, int last, int (*method)(int *, int, int),
     int *comparisons);
 
 #endif
-

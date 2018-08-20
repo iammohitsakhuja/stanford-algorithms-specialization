@@ -9,8 +9,8 @@
 void swap(int *a, int *b)
 {
     int temp = *a;
-    *a = *b;
-    *b = temp;
+    *a       = *b;
+    *b       = temp;
 }
 
 /**
@@ -40,19 +40,16 @@ int choose_median_as_pivot(int *array, int first, int last)
 {
     int middle = (first + last) / 2;
 
-    if (array[middle] < array[first])
-    {
+    if (array[middle] < array[first]) {
         if (array[middle] >= array[last])
             swap(&array[first], &array[middle]);
         else if (array[last] < array[first])
             swap(&array[first], &array[last]);
-    }
-    else if (array[middle] > array[first])
-    {
+    } else if (array[middle] > array[first]) {
         if (array[middle] <= array[last])
             swap(&array[first], &array[middle]);
         else if (array[last] > array[first])
-            swap (&array[first], &array[last]);
+            swap(&array[first], &array[last]);
     }
 
     return array[first];
@@ -65,7 +62,7 @@ int choose_median_as_pivot(int *array, int first, int last)
  */
 int choose_random_pivot(int *array, int first, int last)
 {
-    int n = last - first + 1;
+    int n     = last - first + 1;
     int index = first + rand() % n;
 
     swap(&array[first], &array[index]);
@@ -76,8 +73,8 @@ int choose_random_pivot(int *array, int first, int last)
 /**
  * Uses the method provided to choose a pivot and then returns it.
  */
-int choose_pivot(int *array, int first, int last,
-    int (*method)(int *, int, int))
+int choose_pivot(
+    int *array, int first, int last, int (*method)(int *, int, int))
 {
     return method(array, first, last);
 }
@@ -100,4 +97,3 @@ int partition(int *array, int first, int last, int pivot)
 
     return wall_index;
 }
-

@@ -1,8 +1,8 @@
-#include <assert.h>
 #include "benchmark.h"
 #include "helpers.h"
 #include "merge_sort.h"
 #include "quicksort.h"
+#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,8 +14,7 @@ bool is_sorted(int *array, int length);
 int main(int argc, char **argv)
 {
     // Ensure proper usage.
-    if (argc != 2)
-    {
+    if (argc != 2) {
         printf("Usage: %s num\n", argv[0]);
         return 1;
     }
@@ -24,7 +23,7 @@ int main(int argc, char **argv)
     srand(time(NULL));
 
     // Create an array of the specified size.
-    int num = atoi(argv[1]);
+    int num    = atoi(argv[1]);
     int *array = (int *)malloc(num * sizeof(int));
 
     // Create 5 arrays for copying the array into,
@@ -58,9 +57,9 @@ int main(int argc, char **argv)
 
     // Copy the array elements into 5 different arrays.
     for (int i = 0; i < num; i++)
-        first_element_as_pivot[i] = last_element_as_pivot[i] =
-            median_as_pivot[i] = random_pivot[i] =
-            merge_sort_array[i] = array[i];
+        first_element_as_pivot[i] = last_element_as_pivot[i]
+            = median_as_pivot[i] = random_pivot[i] = merge_sort_array[i]
+            = array[i];
 
     // Benchmark the time taken to sort by choosing first element as the pivot.
     getrusage(RUSAGE_SELF, &before);
@@ -116,8 +115,8 @@ int main(int argc, char **argv)
     printf("TIME IN sorting (random):         %6.2f\n", time_random_pivot);
     printf("TIME IN sorting (merge sort):     %6.2f\n", time_merge_sort);
     printf("TIME IN TOTAL:                    %6.2f\n",
-        time_first_element_as_pivot + time_last_element_as_pivot +
-        time_median_as_pivot + time_random_pivot + time_merge_sort);
+        time_first_element_as_pivot + time_last_element_as_pivot
+            + time_median_as_pivot + time_random_pivot + time_merge_sort);
 
     // Run all tests.
     test(first_element_as_pivot, num);
@@ -151,4 +150,3 @@ bool is_sorted(int *array, int length)
 
     return true;
 }
-

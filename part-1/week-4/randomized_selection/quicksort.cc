@@ -1,5 +1,5 @@
-#include "helpers.hpp"
-#include "quicksort.hpp"
+#include "quicksort.hh"
+#include "helpers.hh"
 
 void quicksort(int *array, int first, int last, int (*method)(int *, int, int))
 {
@@ -19,4 +19,3 @@ void quicksort(int *array, int first, int last, int (*method)(int *, int, int))
     quicksort(array, first, wall_index - 1, method);
     quicksort(array, wall_index + 1, last, method);
 }
-

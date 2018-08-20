@@ -1,8 +1,12 @@
+#include "Point.hh"
 #include <cmath>
 #include <iostream>
-#include "Point.hpp"
 
-Point::Point(int x, int y) : x(x), y(y) {}
+Point::Point(int x, int y)
+    : x(x)
+    , y(y)
+{
+}
 
 Point::Point(Point &point)
 {
@@ -33,4 +37,3 @@ bool Point::operator==(Point p2)
 
     return false;
 }
-

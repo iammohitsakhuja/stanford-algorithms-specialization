@@ -1,18 +1,17 @@
-#include "benchmark.hpp"
+#include "Matrix.hh"
+#include "benchmark.hh"
+#include "strassen.hh"
 #include <iostream>
-#include "Matrix.hpp"
-#include "strassen.hpp"
 
 using namespace std;
 
-void test(Matrix &result_by_proper_method,
-          Matrix &result_by_strassen_algorithm);
+void test(
+    Matrix &result_by_proper_method, Matrix &result_by_strassen_algorithm);
 
 int main(int argc, char **argv)
 {
     // Ensure proper usage.
-    if (argc != 2)
-    {
+    if (argc != 2) {
         printf("Usage: %s num\n", argv[0]);
         return 1;
     }
@@ -47,11 +46,11 @@ int main(int argc, char **argv)
 
     // Display the benchmark results.
     printf("TIME IN calculating result by proper method:         %.2f\n",
-            time_proper_method);
+        time_proper_method);
     printf("TIME IN calculating result by Strassen's algorithm:  %.2f\n",
-            time_strassen_algorithm);
+        time_strassen_algorithm);
     printf("TIME IN TOTAL:                                       %.2f\n\n",
-            time_proper_method + time_strassen_algorithm);
+        time_proper_method + time_strassen_algorithm);
 
     // Run all tests.
     test(result_by_proper_method, result_by_strassen_algorithm);
@@ -60,9 +59,8 @@ int main(int argc, char **argv)
     return 0;
 }
 
-void test(Matrix &result_by_proper_method,
-          Matrix &result_by_strassen_algorithm)
+void test(
+    Matrix &result_by_proper_method, Matrix &result_by_strassen_algorithm)
 {
     assert(result_by_proper_method == result_by_strassen_algorithm);
 }
-

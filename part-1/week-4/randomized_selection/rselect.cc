@@ -1,8 +1,8 @@
-#include "rselect.hpp"
-#include "helpers.hpp"
+#include "rselect.hh"
+#include "helpers.hh"
 
-int rselect(int *array, int first, int last, int order,
-    int (*method)(int *, int, int))
+int rselect(
+    int *array, int first, int last, int order, int (*method)(int *, int, int))
 {
     // Get the total number of elements in the array.
     // If there is only 1 element, then that is the order.
@@ -25,4 +25,3 @@ int rselect(int *array, int first, int last, int order,
     else
         return rselect(array, wall_index + 1, last, order, method);
 }
-

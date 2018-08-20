@@ -1,10 +1,10 @@
-#include "Matrix.hpp"
+#include "Matrix.hh"
 #include <iostream>
 
 // Allocates a n x n matrix.
 Matrix::Matrix(int n)
 {
-    this->n = n;
+    this->n      = n;
     this->matrix = (int **)malloc(n * sizeof(int *));
     for (int i = 0; i < n; i++)
         this->matrix[i] = (int *)calloc(n, sizeof(int));
@@ -20,8 +20,7 @@ Matrix::~Matrix(void)
 
 void Matrix::print(void)
 {
-    for (int i = 0; i < this->n; i++)
-    {
+    for (int i = 0; i < this->n; i++) {
         for (int j = 0; j < this->n; j++)
             printf("%9i ", this->matrix[i][j]);
         printf("\n");
@@ -91,4 +90,3 @@ void Matrix::operator=(Matrix m)
         for (int j = 0; j < this->n; j++)
             this->matrix[i][j] = m.matrix[i][j];
 }
-
