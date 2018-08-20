@@ -1,4 +1,5 @@
 #include <queue>
+#include <stack>
 
 #include "Graph.hh"
 
@@ -54,6 +55,40 @@ list<int> Graph::bfs(int s)
         traversed_vertices.push_back(v + 1);
 
         // Add each unvisited vertex w that v is connected to, to the queue.
+        for (int w : this->vertices[v].edges)
+            if (!this->vertices[w].is_visited) {
+                this->vertices[w].is_visited = true;
+                vertices.push(w);
+            }
+    }
+
+    // Mark all vertices as unvisited again.
+    for (int i : traversed_vertices)
+        this->vertices[i - 1].is_visited = false;
+
+    return traversed_vertices;
+}
+
+list<int> Graph::dfs(int s)
+{
+    // Create a stack to hold each vertex.
+    stack<int> vertices;
+
+    // List to hold all vertices.
+    list<int> traversed_vertices;
+
+    // Mark the current vertex as visited and add it to the stack.
+    this->vertices[s - 1].is_visited = true;
+    vertices.push(s - 1);
+
+    // Iterate over all the vertices in the stack.
+    while (!vertices.empty()) {
+        // Get the top vertex from the stack.
+        int v = vertices.top();
+        vertices.pop();
+        traversed_vertices.push_back(v + 1);
+
+        // Add each unvisited vertex w that v is connected to, to the stack.
         for (int w : this->vertices[v].edges)
             if (!this->vertices[w].is_visited) {
                 this->vertices[w].is_visited = true;
