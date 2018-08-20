@@ -1,15 +1,10 @@
-#include <list>
-
 #include "Vertex.hh"
-
-using namespace std;
 
 #ifndef GRAPH_HH
 #define GRAPH_HH
 
 class Graph {
 private:
-    // Number of vertices.
     int n;
     Vertex *vertices;
 
@@ -18,7 +13,7 @@ public:
     ~Graph(void);
     void add_edge(int v, int w);
     void print(void);
-    list<int> bfs(int s);
+    int get_shortest_path(int src, int dest);
 };
 
 #endif

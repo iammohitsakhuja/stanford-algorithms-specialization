@@ -2,6 +2,8 @@
 
 #include "Graph.hh"
 
+using namespace std;
+
 Graph::Graph(int n)
 {
     this->n        = n;
@@ -34,37 +36,61 @@ void Graph::print(void)
     }
 }
 
-list<int> Graph::bfs(int s)
+int Graph::get_shortest_path(int src, int dest)
 {
+    if (src == dest)
+        return 0;
+
+    // Adjust for indexing.
+    src--;
+    dest--;
+
     // Create a queue to hold each vertex.
     queue<int> vertices;
 
-    // List to hold all vertices.
-    list<int> traversed_vertices;
-
     // Mark the current vertex as visited and add it to the queue.
-    this->vertices[s - 1].is_visited = true;
-    vertices.push(s - 1);
+    this->vertices[src].is_visited = true;
+    this->vertices[src].distance   = 0;
+    vertices.push(src);
+
+    int distance;
+    bool vertex_found = false;
 
     // Iterate over all the vertices in the queue.
     while (!vertices.empty()) {
-        // Get the first vertex from the queue.
+        // Get the vertex at the front of the queue.
         int v = vertices.front();
         vertices.pop();
-        traversed_vertices.push_back(v + 1);
+
+        // Check if this is the vertex to be found.
+        if (v == dest) {
+            vertex_found = true;
+            distance     = this->vertices[v].distance;
+            break;
+        }
 
         // Add each unvisited vertex w that v is connected to, to the queue.
         for (int w : this->vertices[v].edges) {
             if (!this->vertices[w].is_visited) {
                 this->vertices[w].is_visited = true;
+                this->vertices[w].distance   = this->vertices[v].distance + 1;
                 vertices.push(w);
             }
         }
     }
 
     // Mark all vertices as unvisited again.
-    for (int i : traversed_vertices)
-        this->vertices[i - 1].is_visited = false;
+    for (int i = 0; i < n; i++) {
+        this->vertices[i].is_visited = false;
+        this->vertices[i].distance   = 0;
+    }
 
-    return traversed_vertices;
+    // Remove any remaining elements from the queue (when vertex was found).
+    while (!vertices.empty())
+        vertices.pop();
+
+    if (!vertex_found)
+        return -1;
+
+    return distance;
 }
