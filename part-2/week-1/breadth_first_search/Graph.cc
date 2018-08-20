@@ -15,6 +15,11 @@ Graph::~Graph(void)
 
 void Graph::add_edge(int v, int w)
 {
+    // Adjust for indexing.
+    v--;
+    w--;
+
+    // Add undirected edge.
     this->vertices[v].edges.push_front(w);
     this->vertices[w].edges.push_front(v);
 }
@@ -29,22 +34,24 @@ void Graph::print(void)
     }
 }
 
-void Graph::bfs(int s)
+list<int> Graph::bfs(int s)
 {
     // Create a queue to hold each vertex.
     queue<int> vertices;
 
+    // List to hold all vertices.
+    list<int> traversed_vertices;
+
     // Mark the current vertex as visited and add it to the queue.
-    this->vertices[s].is_visited = true;
-    vertices.push(s);
+    this->vertices[s - 1].is_visited = true;
+    vertices.push(s - 1);
 
     // Iterate over all the vertices in the queue.
     while (!vertices.empty()) {
         // Get the first vertex from the queue.
         int v = vertices.front();
         vertices.pop();
-
-        printf("%i ", v);
+        traversed_vertices.push_back(v + 1);
 
         // Add each unvisited vertex w that v is connected to, to the queue.
         for (int w : this->vertices[v].edges) {
@@ -54,5 +61,10 @@ void Graph::bfs(int s)
             }
         }
     }
-    printf("\n");
+
+    // Mark all vertices as unvisited again.
+    for (int i : traversed_vertices)
+        this->vertices[i - 1].is_visited = false;
+
+    return traversed_vertices;
 }

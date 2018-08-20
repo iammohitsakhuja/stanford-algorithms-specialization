@@ -1,3 +1,5 @@
+#include <list>
+
 #include "Vertex.hh"
 
 using namespace std;
@@ -13,5 +15,5 @@ public:
     ~Graph(void);
     void add_edge(int v, int w);
     void print(void);
-    void bfs(int s);
+    list<int> bfs(int s);
 };
