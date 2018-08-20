@@ -1,6 +1,24 @@
+# Ignore all.
+*
+
+# Unignore all with extensions.
+!*.*
+
+# Unignore all dirs.
+!*/
+
+# Unignore all Makefiles.
+!Makefile
+
+# Ignore all object files
 *.o
+
+# Ignore all temporary/swap files.
 *.swp
+
+# Ignore all miscellaneous files and directories.
 .vscode/
+.DS_Store
 
 # Temporarily don't include deterministic selection
 deterministic_selection/
