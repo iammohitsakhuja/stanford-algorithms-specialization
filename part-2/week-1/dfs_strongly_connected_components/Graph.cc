@@ -223,7 +223,7 @@ list<list<int>> Graph::compute_scc(void)
     this->reverse_graph();
 
     // Create a list to hold each strictly connected component.
-    list<list<int>> final_vertices;
+    list<list<int>> strictly_connected_components;
 
     // Iterate over all vertices in the order of decreasing f_values.
     while (!sorted_vertices.empty()) {
@@ -233,13 +233,14 @@ list<list<int>> Graph::compute_scc(void)
 
         // Adjust for indexing, and get the SCC for the current vertex.
         if (!this->vertices[v - 1].is_visited)
-            final_vertices.push_back(this->topological_sort_util(v));
+            strictly_connected_components.push_back(
+                this->topological_sort_util(v));
     }
 
     // Revert back to the original state of the graph.
     this->reverse_graph();
 
-    return final_vertices;
+    return strictly_connected_components;
 }
 
 /**
