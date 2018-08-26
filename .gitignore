@@ -20,6 +20,9 @@
 .vscode/
 .DS_Store
 
+# Ignore large (>50MB) files.
+SCC.txt
+
 # Temporarily don't include deterministic selection
 deterministic_selection/
 
