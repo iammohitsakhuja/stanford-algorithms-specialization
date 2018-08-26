@@ -57,7 +57,7 @@ public:
     list<list<int>> compute_scc(void);
 
     // Tests.
-    bool test_is_reverse(Graph &G);
+    bool is_reverse_of(Graph &G);
     bool operator==(Graph &G);
 };
 

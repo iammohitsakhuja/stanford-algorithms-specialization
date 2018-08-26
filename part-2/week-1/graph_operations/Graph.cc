@@ -298,7 +298,7 @@ list<list<int>> Graph::compute_scc(void)
 /**
  * Function to test whether one graph is the reverse of another graph.
  */
-bool Graph::test_is_reverse(Graph &G)
+bool Graph::is_reverse_of(Graph &G)
 {
     // Calculate the reverse of the current graph.
     // Test if the two graphs are equal.

@@ -1,8 +1,6 @@
-#include "Graph.hh"
-
 #include "tests.hh"
 
-// #pragma GCC diagnostic ignored "-Wunused-variable"
+#pragma GCC diagnostic ignored "-Wunused-variable"
 
 using namespace std;
 
@@ -194,7 +192,7 @@ void test_topological_sort(void)
 void test_reverse(Graph &G)
 {
     Graph rev = G.create_reverse_graph();
-    assert(rev.test_is_reverse(G));
+    assert(rev.is_reverse_of(G));
     printf("Reversing tests passed!\n");
 }
 
