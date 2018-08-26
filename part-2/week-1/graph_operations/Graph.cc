@@ -273,8 +273,8 @@ list<list<int>> Graph::compute_scc(void)
     // Now, reverse the given graph.
     this->reverse_graph();
 
-    // Create a list to hold each strictly connected component.
-    list<list<int>> strictly_connected_components;
+    // Create a list to hold each strongly connected component.
+    list<list<int>> strongly_connected_components;
 
     // Iterate over all vertices in the order of decreasing f_values.
     while (!sorted_vertices.empty()) {
@@ -284,7 +284,7 @@ list<list<int>> Graph::compute_scc(void)
 
         // Adjust for indexing, and get the SCC for the current vertex.
         if (!this->vertices[v - 1].is_visited)
-            strictly_connected_components.push_back(this->dfs(v));
+            strongly_connected_components.push_back(this->dfs(v));
     }
 
     // Revert back to the original state of the graph.
@@ -292,7 +292,7 @@ list<list<int>> Graph::compute_scc(void)
     for (int i = 0; i < this->n; i++)
         this->vertices[i].is_visited = false;
 
-    return strictly_connected_components;
+    return strongly_connected_components;
 }
 
 /**

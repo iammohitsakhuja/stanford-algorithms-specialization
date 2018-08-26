@@ -191,6 +191,13 @@ void test_topological_sort(void)
     printf("Topological sort tests passed!\n");
 }
 
+void test_reverse(Graph &G)
+{
+    Graph rev = G.create_reverse_graph();
+    assert(rev.test_is_reverse(G));
+    printf("Reversing tests passed!\n");
+}
+
 // Function used by dfs testing function.
 static void test_graph1(void)
 {

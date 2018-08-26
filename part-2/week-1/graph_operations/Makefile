@@ -4,22 +4,22 @@
 CXX ?= c++
 
 # Flags to pass to compiler
-CXXFLAGS = -fsanitize=signed-integer-overflow -fsanitize=undefined -ggdb3 \
-		   -O0 -Qunused-arguments -std=c++17 -Wall -Werror -Wextra \
-		   -Wno-sign-compare -Wno-unused-parameter
+CXXFLAGS ?= -fsanitize=signed-integer-overflow -fsanitize=undefined -ggdb3 \
+			-O0 -Qunused-arguments -std=c++17 -Wall -Werror -Wextra \
+			-Wno-sign-compare -Wno-unused-parameter
 
 # Name for executable
 EXE = graph_operations
 
 # Space separated list of header-files
-HDRS = Vertex.hh Graph.hh tests.hh
+HDRS = Vertex.hh Graph.hh tests.hh benchmark.hh
 
 # Space separated list of libraries, if any,
 # each of which should be prefixed with -l
 LIBS =
 
 # Space separated list of source-files
-SRCS = main.cc Graph.cc Vertex.cc tests.cc
+SRCS = main.cc Graph.cc Vertex.cc tests.cc benchmark.cc
 
 # Automatically generated list of object files
 OBJS = $(SRCS:.cc=.o)

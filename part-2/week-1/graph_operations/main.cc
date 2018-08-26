@@ -3,6 +3,7 @@
 #include <set>
 
 #include "Graph.hh"
+#include "benchmark.hh"
 #include "tests.hh"
 
 using namespace std;
@@ -11,6 +12,7 @@ void test(void);
 
 int main(int argc, char **argv)
 {
+    // Ensure proper usage.
     if (argc != 3) {
         fprintf(stderr, "Usage: %s vertices edges\n", argv[0]);
         return 1;
@@ -19,6 +21,7 @@ int main(int argc, char **argv)
     int num   = atoi(argv[1]);
     int edges = atoi(argv[2]);
 
+    // Generate a graph.
     Graph G(num);
     while (edges--) {
         int v, w;
@@ -26,55 +29,57 @@ int main(int argc, char **argv)
         G.add_edge(v, w, true);
     }
 
-    // list<list<int>> strongly_connected_components = G.compute_scc();
-    // set<int, greater<int>> largest_scc;
-    // while (!strongly_connected_components.empty()) {
-    //     int count = 0;
-    //
-    //     while (!strongly_connected_components.front().empty()) {
-    //         count++;
-    //         strongly_connected_components.front().pop_front();
-    //     }
-    //
-    //     strongly_connected_components.pop_front();
-    //     largest_scc.insert(count);
-    // }
-    //
-    // // Print largest SCC.
-    // for (set<int>::iterator it = largest_scc.begin(); it !=
-    // largest_scc.end();
-    //      it++)
-    //     printf("%i ", *it);
-    // printf("\n");
-    //
-    // // test();
-    // // printf("All tests passed!\n");
-    // return 0;
-
+    // Before computing the SCC, test whether other graph operations are
+    // working perfectly.
     test_bfs();
     test_get_shortest_path();
     test_find_connected_components();
     test_dfs();
     test_topological_sort();
-    printf("All tests passed!\n");
-}
+    test_reverse(G);
+    printf("All tests passed!\n\n");
 
-// void test(void)
-// {
-//     // Setup.
-//     const int n = 9;
-//     Graph G(n);
-//     G.add_directed_edge(1, 4);
-//     G.add_directed_edge(2, 8);
-//     G.add_directed_edge(3, 6);
-//     G.add_directed_edge(4, 7);
-//     G.add_directed_edge(5, 2);
-//     G.add_directed_edge(6, 9);
-//     G.add_directed_edge(7, 1);
-//     G.add_directed_edge(8, 5);
-//     G.add_directed_edge(8, 6);
-//     G.add_directed_edge(9, 3);
-//     G.add_directed_edge(9, 7);
-//
-//     list<list<int>> strongly_connected_components = G.compute_scc();
-// }
+    // Structures for timing data.
+    struct rusage before, after;
+
+    // Benchmarks
+    double time_computing_sccs = 0.0;
+
+    // Benchmark the time taken to compute SCCs.
+    getrusage(RUSAGE_SELF, &before);
+    list<list<int>> strongly_connected_components = G.compute_scc();
+    getrusage(RUSAGE_SELF, &after);
+    time_computing_sccs = calculate(&before, &after);
+    printf("SCCs computed successfully!\n");
+
+    // Calculate the number of elements in each SCC.
+    set<int, greater<int>> largest_scc;
+    while (!strongly_connected_components.empty()) {
+        int count = 0;
+
+        while (!strongly_connected_components.front().empty()) {
+            count++;
+            strongly_connected_components.front().pop_front();
+        }
+
+        strongly_connected_components.pop_front();
+        largest_scc.insert(count);
+    }
+
+    // Print top 5 largest SCC.
+    printf("The sizes of the largest (at most 5) SCCs are: ");
+    for (int count = 0; count < 5 && !largest_scc.empty(); count++) {
+        printf("%i ", *largest_scc.begin());
+        largest_scc.erase(largest_scc.begin());
+    }
+    printf("\n");
+
+    // Display the benchmark results.
+    printf("TIME in computing SCCs: %5.2fs\n", time_computing_sccs);
+
+    // Housekeeping.
+    while (!largest_scc.empty())
+        largest_scc.erase(largest_scc.begin());
+
+    return 0;
+}
