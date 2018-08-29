@@ -28,6 +28,23 @@ public:
 
     // In-order traversal.
     list<int> traverse(void);
+
+    // Search for an element.
+    bool search(int element);
+
+    // Get the minimum and maximum elements respectively.
+    TreeNode *min(void);
+    TreeNode *max(void);
+
+    // Select the ith order element.
+    TreeNode *select(int order);
+
+    // Select the predecessor and successor for a given element.
+    TreeNode *pred(int element);
+    TreeNode *succ(int element);
+
+    // Returns the number of keys less than or equal to a given value.
+    int rank(int element);
 };
 
 #endif
