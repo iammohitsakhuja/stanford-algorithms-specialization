@@ -6,6 +6,7 @@
 using namespace std;
 
 void test(vector<int> &sorted_elements);
+void test_is_heap(Heap &heap);
 
 int main(int argc, char **argv)
 {
@@ -42,6 +43,10 @@ int main(int argc, char **argv)
     double time_loading_via_batch_insertions  = 0.0;
     double time_popping_batch_insertions      = 0.0;
 
+    // Seed for random number generator.
+    // (Required for generating random indices).
+    srand(time(NULL));
+
     // Benchmark the time taken to push the elements of the array into the heap
     // one-by-one.
     getrusage(RUSAGE_SELF, &before);
@@ -56,6 +61,26 @@ int main(int argc, char **argv)
     batch_insert_heap.heapify(array);
     getrusage(RUSAGE_SELF, &after);
     time_loading_via_batch_insertions = calculate(&before, &after);
+
+    // Test whether the two heaps formed have the heap property.
+    test_is_heap(single_insert_heap);
+    test_is_heap(batch_insert_heap);
+
+    // Delete some random keys from the first heap and test whether it still
+    // remains a heap.
+    for (int i = 0; i < 5; i++) {
+        int index = rand() % single_insert_heap.size();
+        single_insert_heap.delete_key(index);
+        test_is_heap(single_insert_heap);
+    }
+
+    // Delete some random keys from the second heap and test whether it still
+    // remains a heap.
+    for (int i = 0; i < 5; i++) {
+        int index = rand() % batch_insert_heap.size();
+        batch_insert_heap.delete_key(index);
+        test_is_heap(batch_insert_heap);
+    }
 
     // Benchmark the time taken to remove the elements of the first heap from
     // the top one-by-one.
@@ -107,4 +132,9 @@ void test(vector<int> &sorted_elements)
 {
     for (unsigned int i = 1; i < sorted_elements.size(); i++)
         assert(sorted_elements[i] >= sorted_elements[i - 1]);
+}
+
+void test_is_heap(Heap &heap)
+{
+    assert(heap.is_heap());
 }

@@ -3,7 +3,7 @@
 void Heap::push(int element)
 {
     this->array.push_back(element);
-    this->bubble_up();
+    this->bubble_up(this->size() - 1);
 }
 
 void Heap::pop(void)
@@ -31,6 +31,44 @@ bool Heap::empty(void)
 int Heap::size(void)
 {
     return this->array.size();
+}
+
+void Heap::heapify(vector<int> array)
+{
+    this->array.resize(array.size());
+
+    // First copy all elements.
+    for (int i = 0, size = array.size(); i <= size; i++)
+        this->array[i] = array[i];
+
+    for (int i = this->array.size() - 1; i >= 0; i--)
+        this->bubble_down(i);
+}
+
+void Heap::delete_key(int index)
+{
+    // Get the current size of the heap.
+    int size = this->array.size();
+
+    // Check if the key exists.
+    if (index >= size)
+        return;
+
+    // Else, swap this element with the last element of the heap, and delete
+    // the now last element of the heap.
+    this->swap(index, size - 1);
+
+    // Remove the last element.
+    this->array.pop_back();
+
+    // If this element is less than its parent element, then bubble it up.
+    if (this->array[index] < this->parent(index)) {
+        this->bubble_up(index);
+        return;
+    }
+
+    if (this->has_left_child(index))
+        this->bubble_down(index);
 }
 
 // Private helper functions.
@@ -95,11 +133,8 @@ void Heap::swap(int first_index, int second_index)
     this->array[second_index] = temp;
 }
 
-void Heap::bubble_up(void)
+void Heap::bubble_up(int curr_index)
 {
-    // Get the current index of the last element.
-    int curr_index = this->size() - 1;
-
     // While the current element has a parent, and the value at the current
     // element is less than the value of the parent.
     while (this->has_parent(curr_index)
@@ -133,14 +168,17 @@ void Heap::bubble_down(int curr_index)
     }
 }
 
-void Heap::heapify(vector<int> array)
+bool Heap::is_heap(void)
 {
-    this->array.resize(array.size());
+    int size = this->array.size();
 
-    // First copy all elements.
-    for (int i = 0, size = array.size(); i <= size; i++)
-        this->array[i] = array[i];
+    for (int i = 0; i < size; i++) {
+        if (this->has_left_child(i) && this->array[i] > this->left_child(i))
+            return false;
 
-    for (int i = this->array.size() - 1; i >= 0; i--)
-        this->bubble_down(i);
+        if (this->has_right_child(i) && this->array[i] > this->right_child(i))
+            return false;
+    }
+
+    return true;
 }

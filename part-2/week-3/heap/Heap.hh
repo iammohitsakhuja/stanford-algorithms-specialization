@@ -31,7 +31,7 @@ private:
 
     void swap(int first_index, int second_index);
 
-    void bubble_up(void);
+    void bubble_up(int curr_index);
     void bubble_down(int curr_index);
 
 public:
@@ -45,6 +45,9 @@ public:
     // Batch insert into a heap.
     void heapify(vector<int> array);
 
+    // Deletes the element at a particular index.
+    void delete_key(int index);
+
     // Return the topmost element from the heap.
     int top(void);
 
@@ -53,6 +56,9 @@ public:
 
     // Returns the number of elements in the heap.
     int size(void);
+
+    // Test for checking whether the heap property still holds.
+    bool is_heap(void);
 };
 
 #endif
