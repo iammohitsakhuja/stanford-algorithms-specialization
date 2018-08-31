@@ -7,6 +7,33 @@
 
 using namespace std;
 
+Tree::~Tree(void)
+{
+    // Create a stack to hold all nodes.
+    stack<TreeNode *> nodes;
+
+    // Start from the root node.
+    TreeNode *curr_node = this->root;
+
+    // Traversal will stop only when stack is empty and curr_node is NULL.
+    while (!nodes.empty() || curr_node) {
+        // Traverse the left branch of the current sub-tree.
+        while (curr_node) {
+            nodes.push(curr_node);
+            curr_node = curr_node->left;
+        }
+
+        // Go to the right branch of the last node pushed.
+        curr_node = nodes.top()->right;
+
+        // Free the left most node.
+        free(nodes.top());
+
+        // Remove the now-freed node from the stack.
+        nodes.pop();
+    }
+}
+
 void Tree::push(int data)
 {
     // Create a new tree node.

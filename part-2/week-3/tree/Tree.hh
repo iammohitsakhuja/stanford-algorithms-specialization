@@ -37,6 +37,9 @@ private:
     void delete_node(TreeNode *parent, TreeNode *curr_node);
 
 public:
+    // Memory management.
+    ~Tree(void);
+
     // Insert a node.
     void push(int data);
 
