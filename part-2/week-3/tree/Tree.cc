@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void Tree::insert(int data)
+void Tree::push(int data)
 {
     // Create a new tree node.
     TreeNode *tree_node = create_new_tree_node(data);
@@ -39,8 +39,7 @@ void Tree::insert(int data)
         }
     }
 
-    // Make the parent of the new node to be the current node.
-    tree_node->parent = curr_node;
+    // Update the number of nodes for the current node.
     curr_node->nodes++;
 
     // Attach the new node to the appropriate branch of the current node.
@@ -241,19 +240,28 @@ int Tree::rank(int element)
     return rank;
 }
 
-void Tree::remove(int key)
+void Tree::pop(int key)
 {
-    // TODO: Handle deletion of root node.
-
     // Find the node with the same key, and also its parent.
     TreeNode *curr_node = this->root;
     TreeNode *parent    = NULL;
 
+    // Stack to hold each node on the way to reaching the node with the given
+    // key (required for decreasing the number of nodes at each of the path
+    // nodes).
+    stack<TreeNode *> nodes;
+
+    // Try finding the node with the given key.
     while (curr_node) {
         if (key == curr_node->data)
             break;
 
+        // Add the parent to the stack and update the parent.
+        if (parent)
+            nodes.push(parent);
         parent = curr_node;
+
+        // Traverse the appropriate subtree.
         if (key < curr_node->data)
             curr_node = curr_node->left;
         else
@@ -261,81 +269,77 @@ void Tree::remove(int key)
     }
 
     // No node to delete if there is no node with the given key.
-    if (!curr_node)
+    if (!curr_node) {
+        while (!nodes.empty())
+            nodes.pop();
         return;
+    }
+
+    // Update the number of nodes at each of the nodes on the path.
+    while (!nodes.empty()) {
+        TreeNode *node = nodes.top();
+        nodes.pop();
+        node->nodes--;
+    }
 
     // Now delete the node.
     this->delete_node(parent, curr_node);
 }
 
+int Tree::size(void)
+{
+    return !this->empty() ? this->root->nodes : 0;
+}
+
+bool Tree::empty(void)
+{
+    return !this->root;
+}
+
 void Tree::delete_node(TreeNode *parent, TreeNode *curr_node)
 {
-    // Check the number of children that this node has.
-    // Nodes = 1 means that it has no children.
-    if (curr_node->nodes == 1) {
-        if (!parent)
-            this->root = NULL;
-        else {
-            if (curr_node->data <= parent->data)
-                parent->left = NULL;
-            else
-                parent->right = NULL;
-            parent->nodes--;
-        }
-
-        free(curr_node);
-        return;
-    }
-
-    // Check if the current node has only the left branch.
-    else if (curr_node->left && !curr_node->right) {
-        if (!parent) {
-            this->root = curr_node->left;
-        } else {
-            if (curr_node->data <= parent->data)
-                parent->left = curr_node->left;
-            else
-                parent->right = curr_node->left;
-            parent->nodes--;
-        }
-
-        free(curr_node);
-        return;
-    }
-
-    // Check if the current node has only the right branch.
-    else if (!curr_node->left && curr_node->right) {
-        if (!parent) {
-            this->root = curr_node->right;
-        } else {
-            if (curr_node->data <= parent->data)
-                parent->left = curr_node->right;
-            else
-                parent->right = curr_node->right;
-            parent->nodes--;
-        }
-
-        free(curr_node);
-        return;
-    }
-
-    // Else, when the current node has both branches, find its predecessor
-    // (which is guaranteed to exist in the left subtree).
-    else {
+    // When the current node has both branches, find its predecessor (which is
+    // guaranteed to exist in the left subtree).
+    if (curr_node->left && curr_node->right) {
         vector<TreeNode *> nodes = this->find_pred_parent(curr_node);
 
         TreeNode *pred_parent = nodes[0];
         TreeNode *pred        = nodes[1];
 
-        // Update the number of nodes in current node.
-        curr_node->nodes--;
+        // Update the number of nodes for the current node and its parent node.
+        if (parent)
+            parent->nodes--;
 
         // Swap the predecessor's data with the current node's data.
         swap(pred, curr_node);
 
         // Delete the node at the position of the predecessor.
         this->delete_node(pred_parent, pred);
+
+        return;
     }
+
+    // The node to which the parent shall point after the current node is
+    // deleted.
+    TreeNode *next_node = NULL;
+    if (curr_node->left && !curr_node->right)
+        next_node = curr_node->left;
+    else if (!curr_node->left && curr_node->right)
+        next_node = curr_node->right;
+
+    // Update the parent to point to the appropriate node.
+    if (!parent)
+        this->root = next_node;
+    else {
+        if (curr_node->data <= parent->data)
+            parent->left = next_node;
+        else
+            parent->right = next_node;
+        parent->nodes--;
+    }
+
+    // Delete the node.
+    free(curr_node);
 }
 
 void Tree::swap(TreeNode *node1, TreeNode *node2)
@@ -352,13 +356,14 @@ vector<TreeNode *> Tree::find_pred_parent(TreeNode *root)
     vector<TreeNode *> nodes(2);
 
     // Start from the node that is left child for the root node.
-    TreeNode *pred        = root->left;
     TreeNode *pred_parent = root;
+    TreeNode *pred        = root->left;
 
     // Since the predecessor is guaranteed to be found in the left subtree,
     // it is assured that the predecessor for the given root is the rightmost
     // node of the left subtree.
     while (pred && pred->right) {
+        pred_parent->nodes--;
         pred_parent = pred;
         pred        = pred->right;
     }
@@ -402,11 +407,10 @@ TreeNode *Tree::create_new_tree_node(int data)
     }
 
     // Update the values and pointers of the new tree node.
-    tree_node->data   = data;
-    tree_node->nodes  = 1;
-    tree_node->left   = NULL;
-    tree_node->right  = NULL;
-    tree_node->parent = NULL;
+    tree_node->data  = data;
+    tree_node->nodes = 1;
+    tree_node->left  = NULL;
+    tree_node->right = NULL;
 
     return tree_node;
 }

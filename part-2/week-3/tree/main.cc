@@ -15,15 +15,17 @@ int main(void)
 
 void test(void)
 {
-    const int SIZE             = 11;
-    int inputs[SIZE]           = { 6, 3, 2, 1, 4, 5, 9, 7, 8, 11, 10 };
-    int expected_outputs[SIZE] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+    int SIZE               = 11;
+    int inputs[]           = { 6, 3, 2, 1, 4, 5, 9, 7, 8, 11, 10 };
+    int expected_outputs[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
     Tree tree;
 
     // Insert elements into the tree.
     for (int i = 0; i < SIZE; i++)
-        tree.insert(inputs[i]);
+        tree.push(inputs[i]);
+    assert(tree.size() == SIZE);
+    printf("Tree size is correct!\n");
 
     // Tests for traversing the tree.
     list<int> traversed_nodes = tree.traverse();
@@ -79,55 +81,65 @@ void test(void)
     // Deleting the root.
     int result_after_deleting_6[] = { 3, 5, 7, 8, 10, 11 };
 
+    // Make sure the size is right.
+    assert(tree.size() == SIZE);
+
     // Remove 2.
-    tree.remove(2);
+    tree.pop(2);
     traversed_nodes = tree.traverse();
     for (int i = 0; !traversed_nodes.empty(); i++) {
         assert(traversed_nodes.front() == result_after_deleting_2[i]);
         traversed_nodes.pop_front();
     }
     assert(traversed_nodes.empty());
+    assert(tree.size() == --SIZE);
 
     // Remove 4.
-    tree.remove(4);
+    tree.pop(4);
     traversed_nodes = tree.traverse();
     for (int i = 0; !traversed_nodes.empty(); i++) {
         assert(traversed_nodes.front() == result_after_deleting_4[i]);
         traversed_nodes.pop_front();
     }
     assert(traversed_nodes.empty());
+    assert(tree.size() == --SIZE);
 
     // Remove 1.
-    tree.remove(1);
+    tree.pop(1);
     traversed_nodes = tree.traverse();
     for (int i = 0; !traversed_nodes.empty(); i++) {
         assert(traversed_nodes.front() == result_after_deleting_1[i]);
         traversed_nodes.pop_front();
     }
     assert(traversed_nodes.empty());
+    assert(tree.size() == --SIZE);
 
     // Remove 9.
-    tree.remove(9);
+    tree.pop(9);
     traversed_nodes = tree.traverse();
     for (int i = 0; !traversed_nodes.empty(); i++) {
         assert(traversed_nodes.front() == result_after_deleting_9[i]);
         traversed_nodes.pop_front();
     }
     assert(traversed_nodes.empty());
+    assert(tree.size() == --SIZE);
 
     // Remove 6.
-    tree.remove(6);
+    tree.pop(6);
     traversed_nodes = tree.traverse();
     for (int i = 0; !traversed_nodes.empty(); i++) {
         assert(traversed_nodes.front() == result_after_deleting_6[i]);
         traversed_nodes.pop_front();
     }
     assert(traversed_nodes.empty());
+    assert(tree.size() == --SIZE);
 
     // First remove the remaining 5 elements, then test whether the root
     // deletion when there's only one single node - goes well.
     for (int i = 0; i < 6; i++)
-        tree.remove(result_after_deleting_6[i]);
+        tree.pop(result_after_deleting_6[i]);
     assert(tree.traverse().empty());
+    assert(tree.size() == 0);
+    assert(tree.empty());
     printf("Deletion tests passed!\n");
 }

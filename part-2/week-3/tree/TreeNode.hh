@@ -14,7 +14,6 @@ struct TreeNode {
                   node is the root node */
     TreeNode *left;
     TreeNode *right;
-    TreeNode *parent;
 };
 
 #endif

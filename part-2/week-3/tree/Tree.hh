@@ -38,7 +38,7 @@ private:
 
 public:
     // Insert a node.
-    void insert(int data);
+    void push(int data);
 
     // In-order traversal.
     list<int> traverse(void);
@@ -61,7 +61,13 @@ public:
     int rank(int element);
 
     // Remove a node with a given key.
-    void remove(int key);
+    void pop(int key);
+
+    // Returns the number of nodes currently in the tree.
+    int size(void);
+
+    // Returns true/false is tree is empty.
+    bool empty(void);
 };
 
 #endif
