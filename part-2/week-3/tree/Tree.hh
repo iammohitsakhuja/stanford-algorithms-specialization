@@ -22,6 +22,20 @@ private:
     // Creates a TreeNode.
     static TreeNode *create_new_tree_node(int data);
 
+    // Find in tree.
+    TreeNode *find(int key);
+
+    // Finds the predecessor in the left subtree along with its parent.
+    // First vector element points to the parent.
+    // Second points to the predecessor itself.
+    vector<TreeNode *> find_pred_parent(TreeNode *root);
+
+    // Swaps the data of two nodes.
+    static void swap(TreeNode *node1, TreeNode *node2);
+
+    // Utility function to delete a node.
+    void delete_node(TreeNode *parent, TreeNode *curr_node);
+
 public:
     // Insert a node.
     void insert(int data);
@@ -45,6 +59,9 @@ public:
 
     // Returns the number of keys less than or equal to a given value.
     int rank(int element);
+
+    // Remove a node with a given key.
+    void remove(int key);
 };
 
 #endif

@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <stack>
+#include <vector>
 
 #include "Tree.hh"
 
@@ -82,25 +83,7 @@ list<int> Tree::traverse(void)
 
 bool Tree::search(int element)
 {
-    // Start searching from the root node.
-    TreeNode *curr_node = this->root;
-
-    while (curr_node) {
-        // If the current node's data is equal to the element, then return
-        // true.
-        if (element == curr_node->data)
-            return true;
-
-        // If element is less than the current node's data, then search the
-        // left branch.
-        if (element < curr_node->data)
-            curr_node = curr_node->left;
-        // Else search the right branch.
-        else
-            curr_node = curr_node->right;
-    }
-
-    return false;
+    return this->find(element) ? true : false;
 }
 
 TreeNode *Tree::min(void)
@@ -231,26 +214,182 @@ TreeNode *Tree::succ(int element)
 
 int Tree::rank(int element)
 {
+    // Rank is 0 if the tree is empty.
     if (!this->root)
         return 0;
 
+    // Start from the root node.
     TreeNode *curr_node = this->root;
 
     int rank = 0;
     while (curr_node && (curr_node->left || curr_node->right)) {
+        // Rank stays the same when looking to the left.
         if (element < curr_node->data)
             curr_node = curr_node->left;
         else {
+            // Rank increases when looking to the right.
             int curr_rank = (curr_node->left ? curr_node->left->nodes : 0) + 1;
             rank += curr_rank;
             curr_node = curr_node->right;
         }
     }
 
+    // When curr_node points to a leaf node.
     if (curr_node && curr_node->data <= element)
         rank += 1;
 
     return rank;
+}
+
+void Tree::remove(int key)
+{
+    // TODO: Handle deletion of root node.
+
+    // Find the node with the same key, and also its parent.
+    TreeNode *curr_node = this->root;
+    TreeNode *parent    = NULL;
+
+    while (curr_node) {
+        if (key == curr_node->data)
+            break;
+
+        parent = curr_node;
+        if (key < curr_node->data)
+            curr_node = curr_node->left;
+        else
+            curr_node = curr_node->right;
+    }
+
+    // No node to delete if there is no node with the given key.
+    if (!curr_node)
+        return;
+
+    // Now delete the node.
+    this->delete_node(parent, curr_node);
+}
+
+void Tree::delete_node(TreeNode *parent, TreeNode *curr_node)
+{
+    // Check the number of children that this node has.
+    // Nodes = 1 means that it has no children.
+    if (curr_node->nodes == 1) {
+        if (!parent)
+            this->root = NULL;
+        else {
+            if (curr_node->data <= parent->data)
+                parent->left = NULL;
+            else
+                parent->right = NULL;
+            parent->nodes--;
+        }
+
+        free(curr_node);
+        return;
+    }
+
+    // Check if the current node has only the left branch.
+    else if (curr_node->left && !curr_node->right) {
+        if (!parent) {
+            this->root = curr_node->left;
+        } else {
+            if (curr_node->data <= parent->data)
+                parent->left = curr_node->left;
+            else
+                parent->right = curr_node->left;
+            parent->nodes--;
+        }
+
+        free(curr_node);
+        return;
+    }
+
+    // Check if the current node has only the right branch.
+    else if (!curr_node->left && curr_node->right) {
+        if (!parent) {
+            this->root = curr_node->right;
+        } else {
+            if (curr_node->data <= parent->data)
+                parent->left = curr_node->right;
+            else
+                parent->right = curr_node->right;
+            parent->nodes--;
+        }
+
+        free(curr_node);
+        return;
+    }
+
+    // Else, when the current node has both branches, find its predecessor
+    // (which is guaranteed to exist in the left subtree).
+    else {
+        vector<TreeNode *> nodes = this->find_pred_parent(curr_node);
+
+        TreeNode *pred_parent = nodes[0];
+        TreeNode *pred        = nodes[1];
+
+        // Update the number of nodes in current node.
+        curr_node->nodes--;
+
+        // Swap the predecessor's data with the current node's data.
+        swap(pred, curr_node);
+
+        // Delete the node at the position of the predecessor.
+        this->delete_node(pred_parent, pred);
+    }
+}
+
+void Tree::swap(TreeNode *node1, TreeNode *node2)
+{
+    int data    = node1->data;
+    node1->data = node2->data;
+    node2->data = data;
+}
+
+vector<TreeNode *> Tree::find_pred_parent(TreeNode *root)
+{
+    // Vector to hold pointers to the parent of the predecessor and the
+    // predecessor itself.
+    vector<TreeNode *> nodes(2);
+
+    // Start from the node that is left child for the root node.
+    TreeNode *pred        = root->left;
+    TreeNode *pred_parent = root;
+
+    // Since the predecessor is guaranteed to be found in the left subtree,
+    // it is assured that the predecessor for the given root is the rightmost
+    // node of the left subtree.
+    while (pred && pred->right) {
+        pred_parent = pred;
+        pred        = pred->right;
+    }
+
+    nodes[0] = pred_parent;
+    nodes[1] = pred;
+
+    return nodes;
+}
+
+TreeNode *Tree::find(int key)
+{
+    // Start searching from the root node.
+    TreeNode *curr_node = this->root;
+
+    while (curr_node) {
+        // If the current node's data is equal to the element, then return that
+        // element.
+        if (key == curr_node->data)
+            return curr_node;
+
+        // If element is less than the current node's data, then search the
+        // left branch.
+        if (key < curr_node->data)
+            curr_node = curr_node->left;
+        // Else search the right branch.
+        else
+            curr_node = curr_node->right;
+    }
+
+    return NULL;
 }
 
 TreeNode *Tree::create_new_tree_node(int data)
