@@ -7,6 +7,11 @@
 
 using namespace std;
 
+Tree::Tree(void)
+{
+    this->root = NULL;
+}
+
 Tree::~Tree(void)
 {
     // Create a stack to hold all nodes.

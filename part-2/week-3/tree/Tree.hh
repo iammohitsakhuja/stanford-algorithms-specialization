@@ -38,6 +38,7 @@ private:
 
 public:
     // Memory management.
+    Tree(void);
     ~Tree(void);
 
     // Insert a node.
