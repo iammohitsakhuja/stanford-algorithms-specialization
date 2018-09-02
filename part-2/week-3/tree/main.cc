@@ -38,7 +38,7 @@ int main(int argc, char **argv)
     double time_min_max       = 0.0;
     double time_predecessor   = 0.0;
     double time_successor     = 0.0;
-    double time_rank          = 0.0;
+    double time_ranking       = 0.0;
     double time_deletion      = 0.0;
     double time_clearing      = 0.0;
 
@@ -106,7 +106,7 @@ int main(int argc, char **argv)
     getrusage(RUSAGE_SELF, &before);
     test_rank(array, tree);
     getrusage(RUSAGE_SELF, &after);
-    time_rank = calculate(&before, &after);
+    time_ranking = calculate(&before, &after);
     printf("Rank tests passed!\n");
 
     // Benchmark and test deletion.
@@ -123,7 +123,36 @@ int main(int argc, char **argv)
     time_clearing = calculate(&before, &after);
     printf("Clearing tests passed!\n");
 
-    printf("\nAll tests passed!\n");
+    printf("\nAll tests passed!\n\n");
+
+    // Display the benchmark results.
+    printf("TIME IN insertion and its testing:            %5.2fs\n",
+        time_insertion);
+    printf("TIME IN sorting the array:                    %5.2fs\n",
+        time_sorting_array);
+    printf("TIME IN traversal and its testing:            %5.2fs\n",
+        time_traversal);
+    printf("TIME IN searching and its testing:            %5.2fs\n",
+        time_searching);
+    printf("TIME IN selection and its testing:            %5.2fs\n",
+        time_selection);
+    printf("TIME IN min/max and its testing:              %5.2fs\n",
+        time_min_max);
+    printf("TIME IN finding predecessors and its testing: %5.2fs\n",
+        time_predecessor);
+    printf("TIME IN finding successors and its testing:   %5.2fs\n",
+        time_successor);
+    printf("TIME IN ranking and its testing:              %5.2fs\n",
+        time_ranking);
+    printf("TIME IN deletion and its testing:             %5.2fs\n",
+        time_deletion);
+    printf("TIME IN clearing the tree and its testing:    %5.2fs\n",
+        time_clearing);
+
+    printf("TIME IN total (excluding sorting the array):  %5.2fs\n",
+        time_insertion + time_traversal + time_searching + time_selection
+            + time_min_max + time_predecessor + time_successor + time_deletion
+            + time_clearing);
 
     return 0;
 }
