@@ -14,35 +14,13 @@ Tree::Tree(void)
 
 Tree::~Tree(void)
 {
-    // Create a stack to hold all nodes.
-    stack<TreeNode *> nodes;
-
-    // Start from the root node.
-    TreeNode *curr_node = this->root;
-
-    // Traversal will stop only when stack is empty and curr_node is NULL.
-    while (!nodes.empty() || curr_node) {
-        // Traverse the left branch of the current sub-tree.
-        while (curr_node) {
-            nodes.push(curr_node);
-            curr_node = curr_node->left;
-        }
-
-        // Go to the right branch of the last node pushed.
-        curr_node = nodes.top()->right;
-
-        // Free the left most node.
-        free(nodes.top());
-
-        // Remove the now-freed node from the stack.
-        nodes.pop();
-    }
+    this->clear();
 }
 
 void Tree::push(int data)
 {
     // Create a new tree node.
-    TreeNode *tree_node = create_new_tree_node(data);
+    TreeNode *tree_node = new TreeNode(data);
 
     // If the tree is empty.
     if (!this->root) {
@@ -328,6 +306,36 @@ bool Tree::empty(void)
     return !this->root;
 }
 
+void Tree::clear(void)
+{
+    // Create a stack to hold all nodes.
+    stack<TreeNode *> nodes;
+
+    // Start from the root node.
+    TreeNode *curr_node = this->root;
+
+    // Traversal will stop only when stack is empty and curr_node is NULL.
+    while (!nodes.empty() || curr_node) {
+        // Traverse the left branch of the current sub-tree.
+        while (curr_node) {
+            nodes.push(curr_node);
+            curr_node = curr_node->left;
+        }
+
+        // Go to the right branch of the last node pushed.
+        curr_node = nodes.top()->right;
+
+        // Free the left most node.
+        delete nodes.top();
+
+        // Remove the now-freed node from the stack.
+        nodes.pop();
+    }
+
+    // Reset the root.
+    this->root = NULL;
+}
+
 void Tree::delete_node(TreeNode *parent, TreeNode *curr_node)
 {
     // When the current node has both branches, find its predecessor (which is
@@ -363,7 +371,7 @@ void Tree::delete_node(TreeNode *parent, TreeNode *curr_node)
     if (!parent)
         this->root = next_node;
     else {
-        if (curr_node->data <= parent->data)
+        if (parent->left == curr_node)
             parent->left = next_node;
         else
             parent->right = next_node;
@@ -371,7 +379,7 @@ void Tree::delete_node(TreeNode *parent, TreeNode *curr_node)
     }
 
     // Delete the node.
-    free(curr_node);
+    delete curr_node;
 }
 
 void Tree::swap(TreeNode *node1, TreeNode *node2)
@@ -427,22 +435,4 @@ TreeNode *Tree::find(int key)
     }
 
     return NULL;
-}
-
-TreeNode *Tree::create_new_tree_node(int data)
-{
-    // Allocate memory to the new tree node.
-    TreeNode *tree_node = (TreeNode *)malloc(sizeof(TreeNode));
-    if (!tree_node) {
-        fprintf(stderr, "Error allocating memory to tree node\n");
-        exit(1);
-    }
-
-    // Update the values and pointers of the new tree node.
-    tree_node->data  = data;
-    tree_node->nodes = 1;
-    tree_node->left  = NULL;
-    tree_node->right = NULL;
-
-    return tree_node;
 }

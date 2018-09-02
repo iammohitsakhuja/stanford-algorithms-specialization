@@ -19,9 +19,6 @@ private:
     // The root node of the tree.
     TreeNode *root;
 
-    // Creates a TreeNode.
-    static TreeNode *create_new_tree_node(int data);
-
     // Find in tree.
     TreeNode *find(int key);
 
@@ -72,6 +69,9 @@ public:
 
     // Returns true/false is tree is empty.
     bool empty(void);
+
+    // Removes all elements from the tree.
+    void clear(void);
 };
 
 #endif
