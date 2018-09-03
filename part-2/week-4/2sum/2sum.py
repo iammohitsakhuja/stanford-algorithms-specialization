@@ -58,9 +58,11 @@ def count_achievable_targets(numbers, start, end):
     for target in range(start, end + 1):
         for number in numbers:
             x = target - number
-            if x in numbers:
-                count += 1
-                break
+            if x != number:
+                if x in numbers:
+                    count += 1
+                    break
+
     return count
 
 
