@@ -67,6 +67,13 @@ now the file to be run is `2sum.js`.
 
 ```bash
 $ unzip algo1-programming_prob-2sum.zip
+$ node 2sum.js algo1-programming_prob-2sum.txt -10000 10000
+No. of distinct numbers: 999752
+Count of achievable targets: 427
+
+TIME IN loading the numbers into the hash table:       0.611s
+TIME IN counting achievable targets:                4316.412s
+TIME IN total:                                      4317.023s
 ```
 
 ### C
