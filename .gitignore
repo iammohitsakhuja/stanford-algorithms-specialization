@@ -20,8 +20,9 @@
 .vscode/
 .DS_Store
 
-# Ignore large (>50MB) files.
+# Ignore large files.
 SCC.txt
+algo1-programming_prob-2sum.txt
 
 # Temporarily don't include deterministic selection
 deterministic_selection/
