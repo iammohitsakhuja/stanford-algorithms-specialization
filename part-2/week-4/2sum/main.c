@@ -69,10 +69,10 @@ int main(int argc, char **argv)
     printf("Count of achievable targets: %6i\n\n", count);
 
     // Display the benchmark results.
-    printf("TIME IN loading:   %6.2fs\n", time_load);
-    printf("TIME IN unloading: %6.2fs\n", time_unload);
-    printf("TIME IN counting:  %6.2fs\n", time_counting);
-    printf("TIME IN total:     %6.2fs\n",
+    printf("TIME IN loading:   %7.2fs\n", time_load);
+    printf("TIME IN unloading: %7.2fs\n", time_unload);
+    printf("TIME IN counting:  %7.2fs\n", time_counting);
+    printf("TIME IN total:     %7.2fs\n",
         time_load + time_counting + time_unload);
 
     // Housekeeping.

@@ -108,8 +108,9 @@ bool unload(Node **hash_table)
 
 /**
  * Taken from Thomas Mueller's answer at StackOverflow, which is available
- * here at:
- * https://stackoverflow.com/questions/664014/what-integer-hash-function-are-good-that-accepts-an-integer-hash-key/12996028
+ * here at: https://stackoverflow.com/a/12996028/8158281
+ *
+ * Specifically used for hashing 64-bit integers.
  */
 uint64_t hash(uint64_t x)
 {

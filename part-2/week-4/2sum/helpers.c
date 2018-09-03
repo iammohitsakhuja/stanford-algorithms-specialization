@@ -43,7 +43,6 @@ int count_achievable_targets(const int64_t *array, size_t SIZE,
 
     // Iterate over all target values.
     for (int64_t target = start; target <= end; target++) {
-        // printf("Current target: %i ", target);
         // Iterate over all the elements in the array, and check if the other
         // part of the sum exists in the numbers provided.
         for (size_t i = 0; i < SIZE; i++) {
@@ -52,13 +51,10 @@ int count_achievable_targets(const int64_t *array, size_t SIZE,
             // Only lookup when numbers are distinct.
             if (x != array[i])
                 if (check(hash_table, x)) {
-                    // printf("Current array[i]: %i ", array[i]);
-                    // printf("Current x: %i", x);
                     count += 1;
                     break;
                 }
         }
-        // printf("\n");
     }
 
     return count;
