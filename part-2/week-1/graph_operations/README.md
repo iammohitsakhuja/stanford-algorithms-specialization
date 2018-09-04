@@ -36,8 +36,8 @@ Reversing tests passed!
 All tests passed!
 
 SCCs computed successfully!
-The sizes of the largest (at most 5) SCCs are: 434821 971 460 313 237
-TIME in computing SCCs:  3.93s
+The sizes of the largest (at most 5) SCCs are: 434821 968 459 314 211
+TIME in computing SCCs:  3.98s
 ```
 
 **Note:** The file `SCC.txt` has been provided here, and is needed for the

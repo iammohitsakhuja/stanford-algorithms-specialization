@@ -55,15 +55,14 @@ int main(int argc, char **argv)
     // Calculate the number of elements in each SCC.
     set<int, greater<int>> largest_scc;
     while (!strongly_connected_components.empty()) {
-        int count = 0;
+        // Get the size of the current SCC and insert it into the set.
+        largest_scc.insert(strongly_connected_components.front().size());
 
-        while (!strongly_connected_components.front().empty()) {
-            count++;
-            strongly_connected_components.front().pop_front();
-        }
+        // Clear the current SCC list.
+        strongly_connected_components.front().clear();
 
+        // Remove the list from the list of lists.
         strongly_connected_components.pop_front();
-        largest_scc.insert(count);
     }
 
     // Print top 5 largest SCC.
@@ -78,8 +77,7 @@ int main(int argc, char **argv)
     printf("TIME in computing SCCs: %5.2fs\n", time_computing_sccs);
 
     // Housekeeping.
-    while (!largest_scc.empty())
-        largest_scc.erase(largest_scc.begin());
+    largest_scc.clear();
 
     return 0;
 }

@@ -85,7 +85,7 @@ int Graph::get_shortest_path(int src, int dest)
         return 0;
 
     // Make sure all vertices are unvisited.
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < this->n; i++)
         this->vertices[i].is_visited = false;
 
     // Adjust for indexing.
@@ -128,7 +128,7 @@ int Graph::get_shortest_path(int src, int dest)
     }
 
     // Mark all vertices as unvisited again.
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < this->n; i++)
         this->vertices[i].is_visited = false;
 
     // Remove any remaining elements from the queue (when vertex was found).
@@ -265,12 +265,15 @@ list<list<int>> Graph::compute_scc(void)
     for (int i = 0; i < this->n; i++)
         this->vertices[i].is_visited = false;
 
+    // Reverse the graph.
+    this->reverse_graph();
+
     // Store all vertices in topological order. This will sort them in a way
     // that the vertex with highest f_value will be at the front of the list,
     // and the vertex with the lowest f_value will be at the end of the list.
     list<int> sorted_vertices = this->topological_sort();
 
-    // Now, reverse the given graph.
+    // Now, revert back to the original graph.
     this->reverse_graph();
 
     // Create a list to hold each strongly connected component.
@@ -287,8 +290,7 @@ list<list<int>> Graph::compute_scc(void)
             strongly_connected_components.push_back(this->dfs(v));
     }
 
-    // Revert back to the original state of the graph.
-    this->reverse_graph();
+    // Set all vertices as unvisited again.
     for (int i = 0; i < this->n; i++)
         this->vertices[i].is_visited = false;
 
