@@ -71,16 +71,24 @@ class CompletionTimes {
       System.exit(2);
     }
 
-    // Sort the jobs.
+    // Sort the jobs by taking difference of the weight and length of each job.
     Arrays.sort(jobs, new SortByDifference());
 
-    // Get the completion times.
-    long[] completionTimes = getCompletionTimes(jobs);
+    // Get the completion time when jobs are sorted by difference of weight and length.
+    long[] completionTimesByDifference = getCompletionTimes(jobs);
 
-    // Calculate the sum of the completion times.
-    long sum = Arrays.stream(completionTimes).sum();
+    // Now, sort the jobs by taking ratio of the weight and length of each job.
+    Arrays.sort(jobs, new SortByRatio());
 
-    System.out.println("Sum of weighted completion times: " + sum);
+    // Get the completion time when jobs are sorted by ratio of weight and length.
+    long[] completioniTimesByRatio = getCompletionTimes(jobs);
+
+    // Calculate the sums of the completion times.
+    long sumByDifference = Arrays.stream(completionTimesByDifference).sum();
+    long sumByRatio = Arrays.stream(completioniTimesByRatio).sum();
+
+    System.out.println("Sum of weighted completion times (difference): " + sumByDifference);
+    System.out.println("Sum of weighted completion times (ratio):      " + sumByRatio);
   }
 }
 
@@ -92,6 +100,17 @@ class SortByDifference implements Comparator<Job> {
     if (difference1 == difference2) return b.getWeight() - a.getWeight();
 
     return difference2 - difference1;
+  }
+}
+
+class SortByRatio implements Comparator<Job> {
+  public int compare(Job a, Job b) {
+    float ratio1 = (float) a.getWeight() / a.getLength();
+    float ratio2 = (float) b.getWeight() / b.getLength();
+
+    if (ratio1 > ratio2) return -1;
+    else if (ratio2 > ratio1) return 1;
+    else return 0;
   }
 }
 
