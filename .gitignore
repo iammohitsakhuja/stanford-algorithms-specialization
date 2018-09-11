@@ -16,6 +16,9 @@
 # Ignore all temporary/swap files.
 *.swp
 
+# Ignore all byte-code files.
+*.class
+
 # Ignore all miscellaneous files and directories.
 .vscode/
 .DS_Store

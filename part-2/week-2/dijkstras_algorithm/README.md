@@ -12,8 +12,7 @@ To run and test it out for yourself, follow these steps:
 
 ```bash
 $ make
-$ ./dijkstras_algorithm dijkstraData.txt 200 1 10 7 37 59 82 99 115 133 165 188
-197
+$ ./dijkstras_algorithm dijkstraData.txt 200 1 10 7 37 59 82 99 115 133 165 188 197
  src -> dest (dist)
    1 ->    7 (2599)
    1 ->   37 (2610)
@@ -34,10 +33,11 @@ TIME IN total:                  6.911ms
 ### Program arguments
 
 1. `dijkstraData.txt` - File containing the vertices and weighted edges.
-2. `200` - Number of vertices in the graph. Need to specify it manually.
-3. `1` - Source vertex number.
-4. `10` - (Optional) Number of vertices for which to show output.
-5. `7 37 ... 188 197` - (Optional but required when 4th argument is provided) Vertices for which to show output.
+1. `200` - Number of vertices in the graph. Need to specify it manually.
+1. `1` - Source vertex number.
+1. `10` - (Optional) Number of vertices for which to show output.
+1. `7 37 ... 188 197` - (Optional but required when 4th argument is provided)
+    Vertices for which to show output.
 
 **Note:** The file `dijkstraData.txt` has been provided here, and is used for
 the program to run.
