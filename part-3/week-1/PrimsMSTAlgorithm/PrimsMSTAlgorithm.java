@@ -55,16 +55,28 @@ class PrimsMSTAlgorithm {
     // Get the inputs.
     String fileName = args[0];
 
-    // Load the graph from the file.
+    // Benchmarks.
+    double timeLoadingGraph = 0.0;
+    double timeFindingMST = 0.0;
+
+    // Load the graph from the file and benchmark the time taken.
+    long startTime = System.nanoTime();
     Graph G = loadGraph(fileName);
+    timeLoadingGraph = (System.nanoTime() - startTime) / 1000000.0;
     if (G == null) {
       System.err.println("Graph could not be loaded");
       System.exit(2);
     }
 
     // Get the minimum spanning tree.
+    startTime = System.nanoTime();
     ArrayList<HeapNode> minimumSpanningTree = G.getMinimumSpanningTree();
+    timeFindingMST = (System.nanoTime() - startTime) / 1000000.0;
 
-    System.out.println("Overall cost: " + getOverallCost(minimumSpanningTree));
+    System.out.println("Overall cost: " + getOverallCost(minimumSpanningTree) + "\n");
+
+    // Display the benchmark results.
+    System.out.printf("TIME IN loading graph:   %6.2fms\n", timeLoadingGraph);
+    System.out.printf("TIME IN finding the MST: %6.2fms\n", timeFindingMST);
   }
 }
