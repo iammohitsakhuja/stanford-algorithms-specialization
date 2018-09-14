@@ -70,6 +70,7 @@ class ClusteringBig {
     return uniqueLabels;
   }
 
+  /** Returns the total number of combinations when choosing k elements out of n. */
   private static int getNChooseK(int n, int k) {
     int result = 1;
 
@@ -78,6 +79,7 @@ class ClusteringBig {
     return result;
   }
 
+  /** Returns the inverted character (0 or 1) for the given character. */
   private static char invertBit(char bit) throws IllegalArgumentException {
     switch (bit) {
       case '0':
@@ -89,39 +91,38 @@ class ClusteringBig {
     }
   }
 
-  private static void generateCombos(
-      char[] characters, int startIndex, int bitsToInvert, String[] combos) {
+  /** Utility function for generating inverted permutations of a binary string. */
+  private static void generateCombinationsUtil(
+      char[] characters, int startIndex, int bitsToInvert, ArrayList<String> combinations) {
     if (bitsToInvert == 0) return;
 
     for (int i = startIndex; i <= characters.length - bitsToInvert; i++) {
       // Invert the bit at current position.
       characters[i] = invertBit(characters[i]);
 
-      // Make a recursive call.
-      generateCombos(characters, i + 1, bitsToInvert - 1, combos);
+      // Generate combinations starting from the next index but with one less bit inverted.
+      generateCombinationsUtil(characters, i + 1, bitsToInvert - 1, combinations);
 
-      // Add to combos.
-      if (bitsToInvert == 1) combos[resultIndex++] = new String(characters);
+      // Add to the list of combinations.
+      if (bitsToInvert == 1) combinations.add(new String(characters));
 
-      // Invert back.
+      // Invert back the bit at the current position.
       characters[i] = invertBit(characters[i]);
     }
   }
 
-  private static int resultIndex = 0;
-
-  private static String[] wrapper(String string, int k) {
+  /** Generates inverted permutations of a binary string with `k` bits inverted. */
+  private static ArrayList<String> generateCombinations(String string, int k) {
+    // Calculate the total number of combinations that can be produced.
     int totalCombos = getNChooseK(string.length(), k);
 
-    String[] combos = new String[totalCombos];
+    // Create a list for holding the combinations.
+    ArrayList<String> combinations = new ArrayList<String>(totalCombos);
 
-    resultIndex = 0;
+    // Generate the combinations.
+    generateCombinationsUtil(string.toCharArray(), 0, k, combinations);
 
-    generateCombos(string.toCharArray(), 0, k, combos);
-
-    resultIndex = 0;
-
-    return combos;
+    return combinations;
   }
 
   private static int getMaxClusters(ArrayList<String> vertices) {
@@ -134,30 +135,19 @@ class ClusteringBig {
     UnionFind uf = new UnionFind(vertices.size());
 
     int numClusters = vertices.size();
-    for (int i = 0; i < vertices.size(); i++) {
-      String[] combinations = wrapper(vertices.get(i), 1);
 
-      for (String combo : combinations) {
-        if (hashTable.containsKey(combo)) {
-          int vertex = hashTable.get(combo);
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < vertices.size(); j++) {
+        ArrayList<String> combinations = generateCombinations(vertices.get(j), i + 1);
 
-          if (uf.find(i) != uf.find(vertex)) {
-            numClusters--;
-            uf.union(i, vertex);
-          }
-        }
-      }
-    }
-    for (int i = 0; i < vertices.size(); i++) {
-      String[] combinations = wrapper(vertices.get(i), 2);
+        for (String combo : combinations) {
+          if (hashTable.containsKey(combo)) {
+            int vertex = hashTable.get(combo);
 
-      for (String combo : combinations) {
-        if (hashTable.containsKey(combo)) {
-          int vertex = hashTable.get(combo);
-
-          if (uf.find(i) != uf.find(vertex)) {
-            numClusters--;
-            uf.union(i, vertex);
+            if (uf.find(j) != uf.find(vertex)) {
+              numClusters--;
+              uf.union(j, vertex);
+            }
           }
         }
       }
