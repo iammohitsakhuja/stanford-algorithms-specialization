@@ -52,6 +52,7 @@ class ClusteringBig {
   private static ArrayList<String> getUniqueLabels(String fileName) {
     // Load labels from the file.
     String[] labels = loadLabelsFromFile(fileName);
+    if (labels == null) return null;
 
     // Sort the labels.
     Arrays.sort(labels);
@@ -125,8 +126,9 @@ class ClusteringBig {
     return combinations;
   }
 
-  private static int getMaxClusters(ArrayList<String> vertices) {
-    // Hash all labels.
+  /** Returns the maximum number of clusters that can be formed while ensuring the given spacing. */
+  private static int getMaxClusters(ArrayList<String> vertices, int spacing) {
+    // Create a hash table and hash all labels.
     HashMap<String, Integer> hashTable = new HashMap<String, Integer>(vertices.size());
 
     for (int i = 0; i < vertices.size(); i++) hashTable.put(vertices.get(i), i);
@@ -134,17 +136,25 @@ class ClusteringBig {
     // Initialize a UnionFind.
     UnionFind uf = new UnionFind(vertices.size());
 
+    // Initially, the number of clusters will be the same as total vertices.
     int numClusters = vertices.size();
 
-    for (int i = 0; i < 2; i++) {
+    // Start grouping vertices, starting from the shortest edges.
+    for (int i = 1; i < spacing; i++) {
+
       for (int j = 0; j < vertices.size(); j++) {
-        ArrayList<String> combinations = generateCombinations(vertices.get(j), i + 1);
+        // Get the possible candidate vertices that are at distance `i + 1` away from the current
+        // vertex.
+        ArrayList<String> possibleLabels = generateCombinations(vertices.get(j), i);
 
-        for (String combo : combinations) {
-          if (hashTable.containsKey(combo)) {
-            int vertex = hashTable.get(combo);
+        for (String label : possibleLabels) {
+          // If a vertex with this label exists, then find which cluster it belongs to.
+          if (hashTable.containsKey(label)) {
+            int vertex = hashTable.get(label);
 
+            // Merge the two clusters if they aren't merged already.
             if (uf.find(j) != uf.find(vertex)) {
+              // Everytime two clusters are merged, total number of clusters gets reduced by 1.
               numClusters--;
               uf.union(j, vertex);
             }
@@ -158,19 +168,44 @@ class ClusteringBig {
 
   public static void main(String[] args) {
     // Ensure proper usage.
-    if (args.length != 1) {
-      System.err.println("Usage: java ClusteringBig <fileName>");
+    if (args.length != 2) {
+      System.err.println("Usage: java ClusteringBig <fileName> <spacing>");
       System.exit(1);
     }
 
     // Get the inputs.
     String fileName = args[0];
+    int spacing = 0;
 
-    // Get the labels.
+    try {
+      spacing = Integer.parseInt(args[1]);
+    } catch (NumberFormatException e) {
+      System.err.println("Spacing must be an integer");
+      System.exit(2);
+    }
+
+    // Benchmarks.
+    double timeLoadingLabels = 0.0;
+    double timeFindingMaxClusters = 0.0;
+
+    // Load the labels and benchmark the time taken.
+    double startTime = System.nanoTime();
     ArrayList<String> labels = getUniqueLabels(fileName);
+    timeLoadingLabels = (System.nanoTime() - startTime) / 1000000.0;
+    if (labels == null) {
+      System.err.println("Could not load labels");
+      System.exit(3);
+    }
 
-    // Get the max number of clusters for a given k.
-    int maxClusters = getMaxClusters(labels);
-    System.out.println("Max clusters: " + maxClusters);
+    // Get the max number of clusters for a given spacing and benchmark the time taken.
+    startTime = System.nanoTime();
+    int maxClusters = getMaxClusters(labels, spacing);
+    timeFindingMaxClusters = (System.nanoTime() - startTime) / 1000000.0;
+
+    System.out.println("Max clusters: " + maxClusters + "\n");
+
+    // Display the benchmark results.
+    System.out.printf("TIME IN loading labels:           %8.2fms\n", timeLoadingLabels);
+    System.out.printf("TIME IN finding the max clusters: %8.2fms\n", timeFindingMaxClusters);
   }
 }
