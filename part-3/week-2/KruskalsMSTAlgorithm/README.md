@@ -1,0 +1,30 @@
+# Kruskal's Minimum Spanning Tree Algorithm
+
+## Overview
+
+This folder contains a program that implements Kruskal's algorithm for finding
+the Minimum Spanning Tree of an undirected weighted graph, with positive and
+negative edge lengths.
+
+## Working
+
+The program makes use of a Union-Find data structure that utilises
+`Union by rank` and `Path compression` techniques to optimize its finding and
+union capabilities. The running time for those operations becomes: `O(α(n))`
+where `α` represents the `Inverse Ackermann function`.
+
+### Execution steps
+
+To run and test it out for yourself, follow these steps:
+
+```bash
+$ javac *.java
+$ java KruskalsMSTAlgorithm edges.txt
+Overall cost: -3612829
+
+TIME IN loading graph:    70.56ms
+TIME IN finding the MST:  10.30ms
+```
+
+**Disclaimer:** The actual times depicted here may vary depending on your
+machine.
