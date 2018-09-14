@@ -69,7 +69,7 @@ class KruskalsMSTAlgorithm {
       System.exit(2);
     }
 
-    // Get the minimum spanning tree.
+    // Get the minimum spanning tree and benchmark the time taken.
     startTime = System.nanoTime();
     ArrayList<MSTNode> minimumSpanningTree = G.getMinimumSpanningTree();
     timeFindingMST = (System.nanoTime() - startTime) / 1000000.0;
