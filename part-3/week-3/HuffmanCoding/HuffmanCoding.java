@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 class HuffmanCoding {
+  /** Loads weights from a file into an array. */
   static int[] loadWeightsFromFile(String fileName) {
     Scanner reader = null;
 
@@ -43,9 +44,13 @@ class HuffmanCoding {
     }
 
     // Build Huffman tree.
-    Tree huffmanTree = new Tree(weights);
+    Tree huffmanTreeFromQueue = new Tree(weights);
+    Tree huffmanTreeFromHeap = new Tree(weights, true);
 
-    System.out.println(huffmanTree.getMaximumLength());
-    System.out.println(huffmanTree.getMinimumLength());
+    System.out.println(huffmanTreeFromQueue.getMaximumLength());
+    System.out.println(huffmanTreeFromQueue.getMinimumLength());
+
+    System.out.println(huffmanTreeFromHeap.getMaximumLength());
+    System.out.println(huffmanTreeFromHeap.getMinimumLength());
   }
 }
