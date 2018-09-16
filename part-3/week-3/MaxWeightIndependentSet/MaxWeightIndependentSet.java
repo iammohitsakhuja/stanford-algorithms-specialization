@@ -63,19 +63,53 @@ class MaxWeightIndependentSet {
 
   public static void main(String[] args) {
     // Ensure proper usage.
-    if (args.length != 1) {
-      System.err.println("Usage: java WeightIndependentSet <fileName>");
+    if (args.length < 2) {
+      System.err.println(
+          "Usage: java WeightIndependentSet <fileName> <numOutputVertices> [outputVertices...]");
       System.exit(1);
     }
 
     // Get the inputs.
     String fileName = args[0];
+    int numOutputVertices = 0;
+    try {
+      numOutputVertices = Integer.parseInt(args[1]);
+    } catch (NumberFormatException e) {
+      System.err.println("<numOutputVertices> must be an integer");
+      System.exit(2);
+    }
+
+    // Further ensure proper usage.
+    if (args.length != 2 + numOutputVertices) {
+      System.err.println("Must enter " + numOutputVertices + " vertex numbers after other args");
+      System.exit(3);
+    }
+
+    // Get the output vertices.
+    int[] outputVertices = new int[numOutputVertices];
+    for (int i = 0; i < numOutputVertices; i++) {
+      try {
+        outputVertices[i] = Integer.parseInt(args[2 + i]);
+      } catch (NumberFormatException e) {
+        System.err.println("Vertex numbers must all be integers");
+        System.exit(4);
+      }
+    }
 
     // Load weights from file.
     int[] weights = loadWeightsFromFile(fileName);
 
     // Get the max weight independent set.
     HashMap<Integer, Integer> maxWeightIndependentSet = getMaximumWeightIndependentSet(weights);
+
+    // Check which of the given output vertices are included in the max weight independent set and
+    // display the results.
+    System.out.println("Vertex:       Weight");
+    for (int vertex : outputVertices)
+      if (maxWeightIndependentSet.containsKey(vertex))
+        System.out.printf("%6d: %12d\n", vertex, maxWeightIndependentSet.get(vertex));
+      else System.out.printf("%6d:         null\n", vertex);
+    System.out.println();
 
     // Calculate the sum of the weights of all vertices in the max weight independent set.
     long maxWeightSum = 0;
