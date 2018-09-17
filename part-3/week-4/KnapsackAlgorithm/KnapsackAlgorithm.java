@@ -58,16 +58,14 @@ class KnapsackAlgorithm {
     int[][] lookupTable = new int[knapsack.items.length + 1][knapsack.maxWeight + 1];
 
     for (int i = 1; i < lookupTable.length; i++) {
-      for (int w = 0; w < knapsack.items[i - 1].weight; w++)
-        lookupTable[i][w] = lookupTable[i - 1][w];
+      int currWeight = knapsack.items[i - 1].weight;
+      int currValue = knapsack.items[i - 1].value;
 
-      for (int w = knapsack.items[i - 1].weight; w < lookupTable[i].length; w++) {
-        int currWeight = knapsack.items[i - 1].weight;
-        int currValue = knapsack.items[i - 1].value;
+      for (int w = 0; w < currWeight; w++) lookupTable[i][w] = lookupTable[i - 1][w];
 
+      for (int w = currWeight; w < lookupTable[i].length; w++)
         lookupTable[i][w] =
             Integer.max(lookupTable[i - 1][w], currValue + lookupTable[i - 1][w - currWeight]);
-      }
     }
 
     return lookupTable;
