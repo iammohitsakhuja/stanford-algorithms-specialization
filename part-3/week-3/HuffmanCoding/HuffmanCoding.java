@@ -23,6 +23,9 @@ class HuffmanCoding {
     int[] weights = new int[numWeights];
     for (int i = 0; i < numWeights; i++) weights[i] = reader.hasNextInt() ? reader.nextInt() : 0;
 
+    // Housekeeping.
+    reader.close();
+
     return weights;
   }
 

@@ -51,6 +51,9 @@ class KnapsackAlgorithm {
       items[i] = new Item(value, weight);
     }
 
+    // Housekeeping.
+    reader.close();
+
     return new Knapsack(maxWeight, items);
   }
 
