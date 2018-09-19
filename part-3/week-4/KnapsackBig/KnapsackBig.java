@@ -57,6 +57,7 @@ class KnapsackBig {
   }
 
   static int getBestKnapsackValue(Knapsack knapsack) {
+    // Create a lookup table with just 2 rows that are needed.
     int[][] lookupTable = new int[2][knapsack.maxWeight + 1];
 
     for (int i = 0, x = 0, y = 1;
@@ -65,8 +66,12 @@ class KnapsackBig {
 
       int currWeight = knapsack.items[i].weight;
       int currValue = knapsack.items[i].value;
+
+      // For weights that are less than the weight of the current item, the value will be inherited
+      // from the previous row.
       for (int w = 0; w < currWeight; w++) lookupTable[x][w] = lookupTable[y][w];
 
+      // Fill the rest of the table.
       for (int w = currWeight; w < lookupTable[x].length; w++)
         lookupTable[x][w] =
             Integer.max(lookupTable[y][w], currValue + lookupTable[y][w - currWeight]);

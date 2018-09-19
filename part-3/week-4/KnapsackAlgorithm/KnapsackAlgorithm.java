@@ -58,14 +58,18 @@ class KnapsackAlgorithm {
   }
 
   private static int[][] getLookupTable(Knapsack knapsack) {
+    // Create a lookup table of size (numItems + 1) * (maxWeight + 1).
     int[][] lookupTable = new int[knapsack.items.length + 1][knapsack.maxWeight + 1];
 
     for (int i = 1; i < lookupTable.length; i++) {
       int currWeight = knapsack.items[i - 1].weight;
       int currValue = knapsack.items[i - 1].value;
 
+      // For weights that are less than the weight of the current item, the value will be inherited
+      // from the previous row.
       for (int w = 0; w < currWeight; w++) lookupTable[i][w] = lookupTable[i - 1][w];
 
+      // Fill the rest of the table.
       for (int w = currWeight; w < lookupTable[i].length; w++)
         lookupTable[i][w] =
             Integer.max(lookupTable[i - 1][w], currValue + lookupTable[i - 1][w - currWeight]);
@@ -75,6 +79,7 @@ class KnapsackAlgorithm {
   }
 
   private static LinkedList<Item> reconstructListOfItems(int[][] lookupTable, Knapsack knapsack) {
+    // Create a linked list to store the list of items to be stored in the knapsack.
     LinkedList<Item> bestKnapsackItems = new LinkedList<>();
 
     for (int i = lookupTable.length - 1, residualWeight = knapsack.maxWeight;
@@ -83,8 +88,10 @@ class KnapsackAlgorithm {
       int currWeight = knapsack.items[i - 1].weight;
       int currValue = knapsack.items[i - 1].value;
 
+      // Do not include the current item if its weight is less than the remaining weight.
       if (currWeight > residualWeight) continue;
 
+      // Condition when the current item will be included.
       if (currValue + lookupTable[i - 1][residualWeight - currWeight]
           > lookupTable[i - 1][residualWeight]) {
         bestKnapsackItems.push(knapsack.items[i - 1]);
@@ -96,8 +103,10 @@ class KnapsackAlgorithm {
   }
 
   static LinkedList<Item> getBestKnapsackItems(Knapsack knapsack) {
+    // Get a lookup table for the knapsack.
     int[][] lookupTable = getLookupTable(knapsack);
 
+    // Return the list of items to be included in the knapsack.
     return reconstructListOfItems(lookupTable, knapsack);
   }
 
