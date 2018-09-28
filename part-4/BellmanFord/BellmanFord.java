@@ -78,7 +78,7 @@ class BellmanFord {
       assert vertex == expectedCycle[i];
     }
 
-    System.out.println("Test negative cost cycle(s) passed successfully!");
+    System.out.println("Test with negative cost cycle(s) passed successfully!");
   }
 
   public static void main(String[] args) {
