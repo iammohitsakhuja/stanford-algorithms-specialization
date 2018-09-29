@@ -77,23 +77,31 @@ class FloydWarshall {
     String[] fileNames = new String[numGraphs];
     for (int i = 0; i < numGraphs; i++) fileNames[i] = args[1 + i];
 
-    // Load graphs from the given files.
+    // Benchmarks.
+    double timeLoadingGraphs = 0.0;
+    double timeFindingShortestPaths = 0.0;
+
+    // Load graphs from the given files and benchmark the time taken.
     Graph[] graphs = new Graph[numGraphs];
+
+    long startTime = System.nanoTime();
     for (int i = 0; i < numGraphs; i++) graphs[i] = loadGraphFromFile(fileNames[i]);
+    timeLoadingGraphs = (System.nanoTime() - startTime) / 1000000000.0;
 
-    long[][][] allPairsShortestPathLengths = new long[numGraphs][][];
+    long[][][] allPairsShortestPaths = new long[numGraphs][][];
 
-    // Compute all pairs shortest path lengths.
+    // Compute all pairs shortest paths.
+    startTime = System.nanoTime();
     for (int i = 0; i < numGraphs; i++)
-      allPairsShortestPathLengths[i] = graphs[i].getAllPairsShortestPathLengths();
+      allPairsShortestPaths[i] = graphs[i].getAllPairsShortestPaths();
+    timeFindingShortestPaths = (System.nanoTime() - startTime) / 1000000000.0;
 
     // Calculate the shortest path distance for each graph and display the result.
     long shortestShortestPathDistance = Long.MAX_VALUE;
     for (int i = 0; i < numGraphs; i++)
-      if (allPairsShortestPathLengths[i] == null)
-        System.out.printf("Cycle exists for graph %d\n", i + 1);
+      if (allPairsShortestPaths[i] == null) System.out.printf("Cycle exists for graph %d\n", i + 1);
       else {
-        long currShortestDistance = computeShortestDistance(allPairsShortestPathLengths[i]);
+        long currShortestDistance = computeShortestDistance(allPairsShortestPaths[i]);
         if (currShortestDistance < shortestShortestPathDistance)
           shortestShortestPathDistance = currShortestDistance;
 
@@ -104,6 +112,10 @@ class FloydWarshall {
     // Display the final result.
     if (shortestShortestPathDistance != Long.MAX_VALUE)
       System.out.printf("Shortest shortest path distance: %d\n", shortestShortestPathDistance);
-    else System.out.println("No shortest shortest path distance for the given graphs!");
+    else System.out.println("No shortest shortest path distance for the given graphs!\n");
+
+    // Display the benchmark results.
+    System.out.printf("TIME IN loading graphs:         %6.2fs\n", timeLoadingGraphs);
+    System.out.printf("TIME IN finding shortest paths: %6.2fs\n", timeFindingShortestPaths);
   }
 }

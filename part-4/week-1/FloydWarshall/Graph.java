@@ -18,8 +18,8 @@ class Graph {
     this.vertices[src].addEdge(dest, weight);
   }
 
-  /** Get all pairs shortest path lengths for a directed weighted graph. */
-  long[][] getAllPairsShortestPathLengths() {
+  /** Get all pairs shortest paths for a directed weighted graph. */
+  long[][] getAllPairsShortestPaths() {
     // Lookup table for caching previously computed results.
     long[][][] lookupTable = new long[2][this.numVertices][this.numVertices];
 
