@@ -17,6 +17,7 @@ Cycle exists for graph 2
 Shortest path distance for graph 3: -19
 
 Shortest shortest path distance: -19
+
 TIME IN loading graphs:           0.40s
 TIME IN finding shortest paths:  10.83s
 ```

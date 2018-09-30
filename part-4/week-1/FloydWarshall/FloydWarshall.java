@@ -111,7 +111,7 @@ class FloydWarshall {
 
     // Display the final result.
     if (shortestShortestPathDistance != Long.MAX_VALUE)
-      System.out.printf("Shortest shortest path distance: %d\n", shortestShortestPathDistance);
+      System.out.printf("Shortest shortest path distance: %d\n\n", shortestShortestPathDistance);
     else System.out.println("No shortest shortest path distance for the given graphs!\n");
 
     // Display the benchmark results.
