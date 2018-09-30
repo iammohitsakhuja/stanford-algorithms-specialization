@@ -11,7 +11,7 @@ To run and test it out for yourself, follow these steps:
 
 ```bash
 $ javac *.java
-$ java FloydWarshall 3 g1.txt g2.txt g3.txt
+$ java FloydWarshall 3 ../g1.txt ../g2.txt ../g3.txt
 Cycle exists for graph 1
 Cycle exists for graph 2
 Shortest path distance for graph 3: -19
