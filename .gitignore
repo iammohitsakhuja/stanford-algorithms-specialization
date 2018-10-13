@@ -13,8 +13,9 @@
 # Ignore all object files
 *.o
 
-# Ignore all temporary/swap files.
+# Ignore all temporary/swap files/directories.
 *.swp
+__pycache__/
 
 # Ignore all byte-code files.
 *.class
@@ -29,4 +30,3 @@ algo1-programming_prob-2sum.txt
 
 # Temporarily don't include deterministic selection
 deterministic_selection/
-

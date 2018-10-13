@@ -1,5 +1,5 @@
 from sys import argv
-from time import time, sleep
+from time import time
 
 
 def main(argv):
